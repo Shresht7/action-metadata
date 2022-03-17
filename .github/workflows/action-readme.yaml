@@ -1,0 +1,60 @@
+# ===============================
+# ACTION MARKDOWN TABLE GENERATOR
+# ===============================
+
+name: Markdown-Slots
+
+# Activation Events
+# =================
+
+on:
+  # When the action.yaml file changes
+  push:
+    paths:
+      - action.yaml
+
+  # Manual workflow dispatch
+  workflow_dispatch:
+
+# Jobs
+# ====
+
+jobs:
+  markdown-slots:
+    runs-on: ubuntu-latest
+    steps:
+
+      # Actions Checkout ✅
+      # ===================
+
+      - name: checkout
+        uses: actions/checkout@v3
+
+      # Generate Inputs Markdown Table 📜
+      # =================================
+
+      - name: action-md-table
+        id: md-table
+        uses: Shresht7/action-markdown-table-generator@main
+
+      # Markdown Slots 📋
+      # =================
+
+      - name: markdown-slots
+        id: markdown-slots
+        uses: Shresht7/markdown-slots@main
+        with:
+          slots: |
+            inputs: ${{ steps.md-table.outputs.inputs-md-table }}
+            outputs: ${{ steps.md-table.outputs.outputs-md-table }}
+
+      # Push Changes 🌎
+      # ===============
+
+      - name: push
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git add .
+          git commit -m 'Update README.md'
+          git push        
