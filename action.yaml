@@ -1,0 +1,37 @@
+# ===============================
+# ACTION-MARKDOWN-TABLE-GENERATOR
+# ===============================
+
+name: action-markdown-table-generator
+author: Shresht7
+description: GitHub Action to generate markdown-tables for `inputs` and `outputs` parameters specified in the `action.yaml` metadata file.
+
+runs:
+  using: node16
+  main: dist/index.js
+
+branding:
+  icon: credit-card
+  color: white
+
+# Inputs
+# ======
+
+inputs:
+  path:
+    description: Path to the `action.yaml` metadata file
+    default: ./action.yaml
+  
+  prettyPrint:
+    description: Beautify markdown table
+    default: false
+
+# Outputs
+# =======
+
+outputs:
+  inputs-md-table:
+    description: Markdown table of the action inputs
+
+  outputs-md-table:
+    description: Markdown table of the action outputs
