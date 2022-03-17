@@ -1,24 +1,26 @@
-# ==============
-# BUILD AND TEST
-# ==============
+# ========
+# VALIDATE
+# ========
 
-name: Build-Test
+name: Validate
 
 # Activation Events
 # =================
 
-on: # rebuild any PRs and main branch changes
+on: # Validate on any PRs and main branch changes
   pull_request:
   push:
     branches:
       - main
       - 'releases/*'
+  workflow_dispatch:
 
 # Jobs
 # ====
 
 jobs:
-  build: # make sure build/ci works properly
+  # Check the build/ci process works properly
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -26,7 +28,8 @@ jobs:
           npm install
           npm run build
 
-  test: # make sure the action works on a clean machine without building
+  # make sure the action works on a clean machine without building
+  test-run:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3

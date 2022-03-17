@@ -27,6 +27,3 @@ GitHub Action to generate markdown-tables for `inputs` and `outputs` parameters 
 
 <!-- slot: outputs -->
 <!-- /slot -->
-
-## Permissions
-
