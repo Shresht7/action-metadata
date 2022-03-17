@@ -61,7 +61,7 @@ function action() {
                     value.required ? '**required**' : `\`${(_a = value.default) === null || _a === void 0 ? void 0 : _a.toString()}\`` || ''
                 ]);
                 const inputsMD = (0, helpers_1.createMarkdownTable)(inputs, ['input', 'description', 'default']);
-                core.setOutput('inputs-md-table', inputsMD);
+                core.setOutput('inputs-md-table', JSON.stringify(inputsMD));
             }
         }
         //  Generate outputs-md-table
@@ -74,7 +74,7 @@ function action() {
                 ]);
             }
             const outputsMD = (0, helpers_1.createMarkdownTable)(outputs, ['outputs', 'description']);
-            core.setOutput('outputs-md-table', outputsMD);
+            core.setOutput('outputs-md-table', JSON.stringify(outputsMD));
         }
     });
 }

@@ -21,7 +21,7 @@ export async function action() {
                 value.required ? '**required**' : `\`${value.default?.toString()}\`` || ''
             ])
             const inputsMD = createMarkdownTable(inputs, ['input', 'description', 'default'])
-            core.setOutput('inputs-md-table', inputsMD)
+            core.setOutput('inputs-md-table', JSON.stringify(inputsMD))
         }
     }
 
@@ -35,7 +35,7 @@ export async function action() {
             ])
         }
         const outputsMD = createMarkdownTable(outputs, ['outputs', 'description'])
-        core.setOutput('outputs-md-table', outputsMD)
+        core.setOutput('outputs-md-table', JSON.stringify(outputsMD))
     }
 
 }
