@@ -51,7 +51,7 @@ jobs:
       # ===============
       - name: check for changes
         id: git-diff
-        run: git diff --exit-code
+        run: git status
         # run: |
         #   if git diff --exit-code; then
         #     echo "::set-output name=changes_exist::false"
