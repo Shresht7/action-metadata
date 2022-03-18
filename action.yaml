@@ -27,6 +27,9 @@ inputs:
 # =======
 
 outputs:
+  metadata:
+    description: stringified JSON representation of the action metadata file
+
   inputs-md-table:
     description: Markdown table of the action inputs
 

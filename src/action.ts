@@ -12,6 +12,9 @@ export async function action() {
     //  Get Action Metadata
     const metadata = await readActionYaml()
 
+    //  Export the metadata object
+    core.setOutput('metadata', metadata)
+
     //  Generate inputs-md-table
     if (metadata.inputs) {
         const inputsMD = createInputsTable(metadata.inputs)
