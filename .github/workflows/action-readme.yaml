@@ -49,20 +49,12 @@ jobs:
 
       # Push Changes 🌎
       # ===============
-      - name: check for changes
-        id: git-diff
-        run: |
-          if git diff --exit-code; then
-            echo "::set-output name=changes_exist::false"
-          else
-            echo "::set-output name=changes_exist::true"
-          fi
 
-      - name: push
-        if: ${{ steps.git-diff.outputs.changes_exist == 'true' }}
-        run: |
-          git config user.name 'github-actions[bot]'
-          git config user.email 'github-actions[bot]@users.noreply.github.com'
-          git add .
-          git commit -m 'Update README.md'
-          git push
+      - name: update readme
+        id: update-action-readme
+        uses: peter-evans/create-pull-request@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: "update-action-readme"
+          commit-message: "Update README 📄"
+          title: "Update README 📄"
