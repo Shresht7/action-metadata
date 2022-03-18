@@ -196,6 +196,7 @@ function readActionYaml(src = config_1.path) {
     return __awaiter(this, void 0, void 0, function* () {
         const contents = yield fs.promises.readFile(src, { encoding: 'utf-8' });
         const yaml = jsYaml.load(contents);
+        console.log(yaml);
         return yaml;
     });
 }
@@ -260,6 +261,7 @@ function run() {
         catch (err) {
             const error = err;
             core.error(error);
+            core.setFailed(error);
         }
     });
 }

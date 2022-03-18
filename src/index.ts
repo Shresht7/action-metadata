@@ -13,6 +13,7 @@ async function run() {
     } catch (err) {
         const error = err as Error
         core.error(error)
+        core.setFailed(error)
     }
 }
 
