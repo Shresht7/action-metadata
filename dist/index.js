@@ -5771,10 +5771,11 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.outputAlignment = exports.inputAlignment = exports.path = exports.src = void 0;
+exports.outputAlignment = exports.inputAlignment = exports.path = void 0;
 //  Library
 const core = __importStar(__nccwpck_require__(2186));
-const nodePath = __importStar(__nccwpck_require__(9411));
+//  Helpers
+const helpers_1 = __nccwpck_require__(3202);
 const metadata_1 = __nccwpck_require__(3252);
 // ======
 // CONFIG
@@ -5784,14 +5785,65 @@ const workspace = process.env.GITHUB_WORKSPACE || '';
 if (!workspace) {
     throw new Error('Invalid GITHUB_WORKSPACE. You need to checkout this repository using the actions/checkout@v3 github-action for the GITHUB_WORKSPACE environment variable.');
 }
-/** Path the source action metadata file. (default: `action.yaml`) */
-exports.src = core.getInput(metadata_1.inputs.src, { required: true });
+/** Path to the metadata file */
+const metadataPath = (0, helpers_1.getMetadataFilePath)(workspace);
+if (!metadataPath) {
+    throw new Error('Failed to locate action metadata file. Make sure `action.yaml` or `action.yml` exists!');
+}
 /** Workspace path to the action metadata file */
-exports.path = nodePath.join(workspace, exports.src);
+exports.path = metadataPath;
 /** Comma-separated array denoting the alignment of columns ['l' for left, 'c' for center, 'r' for right] */
 exports.inputAlignment = core.getInput(metadata_1.inputs.inputAlignment).split(',').map(x => x.trim());
 /** Comma-separated array denoting the alignment of columns ['l' for left, 'c' for center, 'r' for right] */
 exports.outputAlignment = core.getInput(metadata_1.inputs.outputAlignment).split(',').map(x => x.trim());
+
+
+/***/ }),
+
+/***/ 1438:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.getMetadataFilePath = void 0;
+//  Library
+const fs = __importStar(__nccwpck_require__(7561));
+const path = __importStar(__nccwpck_require__(9411));
+/** Locate the action metadata file (either action.yml or action.yaml) */
+function getMetadataFilePath(workspace) {
+    const possibleNames = ['action.yml', 'action.yaml'];
+    for (const fileName of possibleNames) {
+        const filePath = path.join(workspace, fileName);
+        if (fs.existsSync(filePath)) {
+            return filePath;
+        }
+    }
+}
+exports.getMetadataFilePath = getMetadataFilePath;
 
 
 /***/ }),
@@ -5820,6 +5872,7 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 __exportStar(__nccwpck_require__(5265), exports);
+__exportStar(__nccwpck_require__(1438), exports);
 
 
 /***/ }),
@@ -6036,7 +6089,6 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.outputs = exports.inputs = void 0;
 /** Action Inputs */
 exports.inputs = {
-    src: 'src',
     inputAlignment: 'input-table-alignment',
     outputAlignment: 'output-table-alignment'
 };

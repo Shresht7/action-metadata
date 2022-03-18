@@ -51,7 +51,6 @@ The action can run on auto-pilot using the default parameters. To change any inp
   id: action-metadata
   uses: Shresht7/action-metadata@v1
   with:
-    src: ./action.yml
     input-table-alignment: 'c,l,r,l'
 ```
 
