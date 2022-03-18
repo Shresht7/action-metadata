@@ -42,38 +42,23 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.action = void 0;
 //  Library
 const core = __importStar(__nccwpck_require__(2186));
+const library_1 = __nccwpck_require__(2172);
 const helpers_1 = __nccwpck_require__(863);
 // =============
 // GITHUB ACTION
 // =============
 function action() {
-    var _a;
     return __awaiter(this, void 0, void 0, function* () {
         //  Get Action Metadata
         const metadata = yield (0, helpers_1.readActionYaml)();
         //  Generate inputs-md-table
         if (metadata.inputs) {
-            const inputs = [];
-            for (const [key, value] of Object.entries(metadata.inputs)) {
-                inputs.push([
-                    key,
-                    value.description,
-                    value.required ? '**required**' : `\`${(_a = value.default) === null || _a === void 0 ? void 0 : _a.toString()}\`` || ''
-                ]);
-                const inputsMD = (0, helpers_1.createMarkdownTable)(inputs, ['input', 'description', 'default']);
-                core.setOutput('inputs-md-table', JSON.stringify(inputsMD));
-            }
+            const inputsMD = (0, library_1.createInputsTable)(metadata.inputs);
+            core.setOutput('inputs-md-table', JSON.stringify(inputsMD));
         }
         //  Generate outputs-md-table
         if (metadata.outputs) {
-            const outputs = [];
-            for (const [key, value] of Object.entries(metadata.outputs)) {
-                outputs.push([
-                    key,
-                    value.description
-                ]);
-            }
-            const outputsMD = (0, helpers_1.createMarkdownTable)(outputs, ['outputs', 'description']);
+            const outputsMD = (0, library_1.createOutputsTable)(metadata.outputs);
             core.setOutput('outputs-md-table', JSON.stringify(outputsMD));
         }
     });
@@ -115,47 +100,22 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.prettyPrint = exports.path = exports.target = void 0;
+exports.path = exports.src = void 0;
 //  Library
 const core = __importStar(__nccwpck_require__(2186));
 const nodePath = __importStar(__nccwpck_require__(9411));
 // ======
 // CONFIG
 // ======
+/** GITHUB_WORKSPACE */
 const workspace = process.env.GITHUB_WORKSPACE || '';
-exports.target = core.getInput('path');
-exports.path = nodePath.join(workspace, exports.target);
-exports.prettyPrint = core.getBooleanInput('prettyPrint');
-
-
-/***/ }),
-
-/***/ 5452:
-/***/ ((__unused_webpack_module, exports) => {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.createMarkdownTable = void 0;
-/** Create markdown table for the given rows */
-function createMarkdownTable(rows, headers) {
-    headers = headers || rows.shift();
-    const md = ['\n'];
-    md.push(createRow(headers));
-    md.push(createRow(headers.map(h => '-'.repeat(h.length))));
-    for (const row of rows) {
-        md.push(createRow(row));
-    }
-    md.push('\n');
-    return md.join('\n');
+if (!workspace) {
+    throw new Error('Invalid GITHUB_WORKSPACE. You need to checkout this repository using the actions/checkout@v3 github-action for the GITHUB_WORKSPACE environment variable.');
 }
-exports.createMarkdownTable = createMarkdownTable;
-/** Create a single markdown table row */
-function createRow(row) {
-    return '| ' + row.join(' | ') + ' |';
-}
-// TODO: Pretty-Print Markdown Table
-// TODO: Adjustable Text-Alignment
+/** Path the source action metadata file. (default: `action.yaml`) */
+exports.src = core.getInput('src', { required: true });
+/** Workspace path of the action metadata file */
+exports.path = nodePath.join(workspace, exports.src);
 
 
 /***/ }),
@@ -184,7 +144,6 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 __exportStar(__nccwpck_require__(7871), exports);
-__exportStar(__nccwpck_require__(5452), exports);
 
 
 /***/ }),
@@ -232,10 +191,10 @@ exports.readActionYaml = void 0;
 const fs = __importStar(__nccwpck_require__(7561));
 const jsYaml = __importStar(__nccwpck_require__(1917));
 const config_1 = __nccwpck_require__(88);
-/** Read action.yaml file from the workspace */
-function readActionYaml(target = config_1.path) {
+/** Read action metadata file from the workspace */
+function readActionYaml(src = config_1.path) {
     return __awaiter(this, void 0, void 0, function* () {
-        const contents = yield fs.promises.readFile(target, { encoding: 'utf-8' });
+        const contents = yield fs.promises.readFile(src, { encoding: 'utf-8' });
         const yaml = jsYaml.load(contents);
         return yaml;
     });
@@ -292,6 +251,7 @@ const action_1 = __importDefault(__nccwpck_require__(9139));
 //  ====
 //  MAIN
 //  ====
+/** Main entrypoint for the GitHub Action */
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -304,6 +264,85 @@ function run() {
     });
 }
 run();
+
+
+/***/ }),
+
+/***/ 3097:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.createInputsTable = void 0;
+//  Helpers
+const markdown_table_1 = __nccwpck_require__(4701);
+function createInputsTable(metadata) {
+    const inputs = [['Input', 'Description', 'Default', 'Required']];
+    for (const [key, value] of Object.entries(metadata)) {
+        inputs.push([
+            key,
+            value.description,
+            value.default || '',
+            `\`${value.required}\``
+        ]);
+    }
+    return (0, markdown_table_1.markdownTable)(inputs, { align: ['c', 'l', 'r', 'c'] });
+}
+exports.createInputsTable = createInputsTable;
+
+
+/***/ }),
+
+/***/ 1178:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.createOutputsTable = void 0;
+//  Helpers
+const markdown_table_1 = __nccwpck_require__(4701);
+function createOutputsTable(metadata) {
+    const outputs = [['Output', 'Description']];
+    for (const [key, value] of Object.entries(metadata.outputs)) {
+        outputs.push([
+            key,
+            value.description
+        ]);
+    }
+    return (0, markdown_table_1.markdownTable)(outputs, { align: ['c', 'l'] });
+}
+exports.createOutputsTable = createOutputsTable;
+
+
+/***/ }),
+
+/***/ 2172:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+//  =======
+//  LIBRARY
+//  =======
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __exportStar = (this && this.__exportStar) || function(m, exports) {
+    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+__exportStar(__nccwpck_require__(3097), exports);
+__exportStar(__nccwpck_require__(1178), exports);
 
 
 /***/ }),
@@ -6064,6 +6103,398 @@ module.exports = require("tls");
 "use strict";
 module.exports = require("util");
 
+/***/ }),
+
+/***/ 4701:
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __nccwpck_require__) => {
+
+"use strict";
+__nccwpck_require__.r(__webpack_exports__);
+/* harmony export */ __nccwpck_require__.d(__webpack_exports__, {
+/* harmony export */   "markdownTable": () => (/* binding */ markdownTable)
+/* harmony export */ });
+/**
+ * @typedef Options
+ *   Configuration (optional).
+ * @property {string|null|Array<string|null|undefined>} [align]
+ *   One style for all columns, or styles for their respective columns.
+ *   Each style is either `'l'` (left), `'r'` (right), or `'c'` (center).
+ *   Other values are treated as `''`, which doesn’t place the colon in the
+ *   alignment row but does align left.
+ *   *Only the lowercased first character is used, so `Right` is fine.*
+ * @property {boolean} [padding=true]
+ *   Whether to add a space of padding between delimiters and cells.
+ *
+ *   When `true`, there is padding:
+ *
+ *   ```markdown
+ *   | Alpha | B     |
+ *   | ----- | ----- |
+ *   | C     | Delta |
+ *   ```
+ *
+ *   When `false`, there is no padding:
+ *
+ *   ```markdown
+ *   |Alpha|B    |
+ *   |-----|-----|
+ *   |C    |Delta|
+ *   ```
+ * @property {boolean} [delimiterStart=true]
+ *   Whether to begin each row with the delimiter.
+ *
+ *   > 👉 **Note**: please don’t use this: it could create fragile structures
+ *   > that aren’t understandable to some markdown parsers.
+ *
+ *   When `true`, there are starting delimiters:
+ *
+ *   ```markdown
+ *   | Alpha | B     |
+ *   | ----- | ----- |
+ *   | C     | Delta |
+ *   ```
+ *
+ *   When `false`, there are no starting delimiters:
+ *
+ *   ```markdown
+ *   Alpha | B     |
+ *   ----- | ----- |
+ *   C     | Delta |
+ *   ```
+ * @property {boolean} [delimiterEnd=true]
+ *   Whether to end each row with the delimiter.
+ *
+ *   > 👉 **Note**: please don’t use this: it could create fragile structures
+ *   > that aren’t understandable to some markdown parsers.
+ *
+ *   When `true`, there are ending delimiters:
+ *
+ *   ```markdown
+ *   | Alpha | B     |
+ *   | ----- | ----- |
+ *   | C     | Delta |
+ *   ```
+ *
+ *   When `false`, there are no ending delimiters:
+ *
+ *   ```markdown
+ *   | Alpha | B
+ *   | ----- | -----
+ *   | C     | Delta
+ *   ```
+ * @property {boolean} [alignDelimiters=true]
+ *   Whether to align the delimiters.
+ *   By default, they are aligned:
+ *
+ *   ```markdown
+ *   | Alpha | B     |
+ *   | ----- | ----- |
+ *   | C     | Delta |
+ *   ```
+ *
+ *   Pass `false` to make them staggered:
+ *
+ *   ```markdown
+ *   | Alpha | B |
+ *   | - | - |
+ *   | C | Delta |
+ *   ```
+ * @property {(value: string) => number} [stringLength]
+ *   Function to detect the length of table cell content.
+ *   This is used when aligning the delimiters (`|`) between table cells.
+ *   Full-width characters and emoji mess up delimiter alignment when viewing
+ *   the markdown source.
+ *   To fix this, you can pass this function, which receives the cell content
+ *   and returns its “visible” size.
+ *   Note that what is and isn’t visible depends on where the text is displayed.
+ *
+ *   Without such a function, the following:
+ *
+ *   ```js
+ *   markdownTable([
+ *     ['Alpha', 'Bravo'],
+ *     ['中文', 'Charlie'],
+ *     ['👩‍❤️‍👩', 'Delta']
+ *   ])
+ *   ```
+ *
+ *   Yields:
+ *
+ *   ```markdown
+ *   | Alpha | Bravo |
+ *   | - | - |
+ *   | 中文 | Charlie |
+ *   | 👩‍❤️‍👩 | Delta |
+ *   ```
+ *
+ *   With [`string-width`](https://github.com/sindresorhus/string-width):
+ *
+ *   ```js
+ *   import stringWidth from 'string-width'
+ *
+ *   markdownTable(
+ *     [
+ *       ['Alpha', 'Bravo'],
+ *       ['中文', 'Charlie'],
+ *       ['👩‍❤️‍👩', 'Delta']
+ *     ],
+ *     {stringLength: stringWidth}
+ *   )
+ *   ```
+ *
+ *   Yields:
+ *
+ *   ```markdown
+ *   | Alpha | Bravo   |
+ *   | ----- | ------- |
+ *   | 中文  | Charlie |
+ *   | 👩‍❤️‍👩    | Delta   |
+ *   ```
+ */
+
+/**
+ * @typedef {Options} MarkdownTableOptions
+ * @todo
+ *   Remove next major.
+ */
+
+/**
+ * Generate a markdown ([GFM](https://docs.github.com/en/github/writing-on-github/working-with-advanced-formatting/organizing-information-with-tables)) table..
+ *
+ * @param {Array<Array<string|null|undefined>>} table
+ *   Table data (matrix of strings).
+ * @param {Options} [options]
+ *   Configuration (optional).
+ * @returns {string}
+ */
+function markdownTable(table, options = {}) {
+  const align = (options.align || []).concat()
+  const stringLength = options.stringLength || defaultStringLength
+  /** @type {Array<number>} Character codes as symbols for alignment per column. */
+  const alignments = []
+  /** @type {Array<Array<string>>} Cells per row. */
+  const cellMatrix = []
+  /** @type {Array<Array<number>>} Sizes of each cell per row. */
+  const sizeMatrix = []
+  /** @type {Array<number>} */
+  const longestCellByColumn = []
+  let mostCellsPerRow = 0
+  let rowIndex = -1
+
+  // This is a superfluous loop if we don’t align delimiters, but otherwise we’d
+  // do superfluous work when aligning, so optimize for aligning.
+  while (++rowIndex < table.length) {
+    /** @type {Array<string>} */
+    const row = []
+    /** @type {Array<number>} */
+    const sizes = []
+    let columnIndex = -1
+
+    if (table[rowIndex].length > mostCellsPerRow) {
+      mostCellsPerRow = table[rowIndex].length
+    }
+
+    while (++columnIndex < table[rowIndex].length) {
+      const cell = serialize(table[rowIndex][columnIndex])
+
+      if (options.alignDelimiters !== false) {
+        const size = stringLength(cell)
+        sizes[columnIndex] = size
+
+        if (
+          longestCellByColumn[columnIndex] === undefined ||
+          size > longestCellByColumn[columnIndex]
+        ) {
+          longestCellByColumn[columnIndex] = size
+        }
+      }
+
+      row.push(cell)
+    }
+
+    cellMatrix[rowIndex] = row
+    sizeMatrix[rowIndex] = sizes
+  }
+
+  // Figure out which alignments to use.
+  let columnIndex = -1
+
+  if (typeof align === 'object' && 'length' in align) {
+    while (++columnIndex < mostCellsPerRow) {
+      alignments[columnIndex] = toAlignment(align[columnIndex])
+    }
+  } else {
+    const code = toAlignment(align)
+
+    while (++columnIndex < mostCellsPerRow) {
+      alignments[columnIndex] = code
+    }
+  }
+
+  // Inject the alignment row.
+  columnIndex = -1
+  /** @type {Array<string>} */
+  const row = []
+  /** @type {Array<number>} */
+  const sizes = []
+
+  while (++columnIndex < mostCellsPerRow) {
+    const code = alignments[columnIndex]
+    let before = ''
+    let after = ''
+
+    if (code === 99 /* `c` */) {
+      before = ':'
+      after = ':'
+    } else if (code === 108 /* `l` */) {
+      before = ':'
+    } else if (code === 114 /* `r` */) {
+      after = ':'
+    }
+
+    // There *must* be at least one hyphen-minus in each alignment cell.
+    let size =
+      options.alignDelimiters === false
+        ? 1
+        : Math.max(
+            1,
+            longestCellByColumn[columnIndex] - before.length - after.length
+          )
+
+    const cell = before + '-'.repeat(size) + after
+
+    if (options.alignDelimiters !== false) {
+      size = before.length + size + after.length
+
+      if (size > longestCellByColumn[columnIndex]) {
+        longestCellByColumn[columnIndex] = size
+      }
+
+      sizes[columnIndex] = size
+    }
+
+    row[columnIndex] = cell
+  }
+
+  // Inject the alignment row.
+  cellMatrix.splice(1, 0, row)
+  sizeMatrix.splice(1, 0, sizes)
+
+  rowIndex = -1
+  /** @type {Array<string>} */
+  const lines = []
+
+  while (++rowIndex < cellMatrix.length) {
+    const row = cellMatrix[rowIndex]
+    const sizes = sizeMatrix[rowIndex]
+    columnIndex = -1
+    /** @type {Array<string>} */
+    const line = []
+
+    while (++columnIndex < mostCellsPerRow) {
+      const cell = row[columnIndex] || ''
+      let before = ''
+      let after = ''
+
+      if (options.alignDelimiters !== false) {
+        const size =
+          longestCellByColumn[columnIndex] - (sizes[columnIndex] || 0)
+        const code = alignments[columnIndex]
+
+        if (code === 114 /* `r` */) {
+          before = ' '.repeat(size)
+        } else if (code === 99 /* `c` */) {
+          if (size % 2) {
+            before = ' '.repeat(size / 2 + 0.5)
+            after = ' '.repeat(size / 2 - 0.5)
+          } else {
+            before = ' '.repeat(size / 2)
+            after = before
+          }
+        } else {
+          after = ' '.repeat(size)
+        }
+      }
+
+      if (options.delimiterStart !== false && !columnIndex) {
+        line.push('|')
+      }
+
+      if (
+        options.padding !== false &&
+        // Don’t add the opening space if we’re not aligning and the cell is
+        // empty: there will be a closing space.
+        !(options.alignDelimiters === false && cell === '') &&
+        (options.delimiterStart !== false || columnIndex)
+      ) {
+        line.push(' ')
+      }
+
+      if (options.alignDelimiters !== false) {
+        line.push(before)
+      }
+
+      line.push(cell)
+
+      if (options.alignDelimiters !== false) {
+        line.push(after)
+      }
+
+      if (options.padding !== false) {
+        line.push(' ')
+      }
+
+      if (
+        options.delimiterEnd !== false ||
+        columnIndex !== mostCellsPerRow - 1
+      ) {
+        line.push('|')
+      }
+    }
+
+    lines.push(
+      options.delimiterEnd === false
+        ? line.join('').replace(/ +$/, '')
+        : line.join('')
+    )
+  }
+
+  return lines.join('\n')
+}
+
+/**
+ * @param {string|null|undefined} [value]
+ * @returns {string}
+ */
+function serialize(value) {
+  return value === null || value === undefined ? '' : String(value)
+}
+
+/**
+ * @param {string} value
+ * @returns {number}
+ */
+function defaultStringLength(value) {
+  return value.length
+}
+
+/**
+ * @param {string|null|undefined} value
+ * @returns {number}
+ */
+function toAlignment(value) {
+  const code = typeof value === 'string' ? value.codePointAt(0) : 0
+
+  return code === 67 /* `C` */ || code === 99 /* `c` */
+    ? 99 /* `c` */
+    : code === 76 /* `L` */ || code === 108 /* `l` */
+    ? 108 /* `l` */
+    : code === 82 /* `R` */ || code === 114 /* `r` */
+    ? 114 /* `r` */
+    : 0
+}
+
+
 /***/ })
 
 /******/ 	});
@@ -6099,6 +6530,34 @@ module.exports = require("util");
 /******/ 	}
 /******/ 	
 /************************************************************************/
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	(() => {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__nccwpck_require__.d = (exports, definition) => {
+/******/ 			for(var key in definition) {
+/******/ 				if(__nccwpck_require__.o(definition, key) && !__nccwpck_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	(() => {
+/******/ 		__nccwpck_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	(() => {
+/******/ 		// define __esModule on exports
+/******/ 		__nccwpck_require__.r = (exports) => {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	})();
+/******/ 	
 /******/ 	/* webpack/runtime/compat */
 /******/ 	
 /******/ 	if (typeof __nccwpck_require__ !== 'undefined') __nccwpck_require__.ab = __dirname + "/";
