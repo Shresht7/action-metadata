@@ -8,7 +8,7 @@ export function createOutputsTable(metadata: Record<string, ActionOutput>) {
     const outputs = [['Output', 'Description']]
     for (const [key, value] of Object.entries(metadata)) {
         outputs.push([
-            key,
+            `\`${key}\``,
             value.description
         ])
     }

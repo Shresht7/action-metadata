@@ -5,14 +5,15 @@ import { markdownTable } from 'markdown-table'
 import type { ActionInput } from '../types'
 
 export function createInputsTable(metadata: Record<string, ActionInput>) {
-    const inputs = [['Input', 'Description', 'Default', 'Required']]
+    const inputs = [['Input', 'Description', 'Default/Required']]
     for (const [key, value] of Object.entries(metadata)) {
         inputs.push([
-            key,
+            `\`${key}\``,
             value.description,
-            value.default || '',
-            `\`${value.required}\``
+            value.required
+                ? '**required**'
+                : `\`${value.default}\``
         ])
     }
-    return markdownTable(inputs, { align: ['c', 'l', 'r', 'c'] })
+    return markdownTable(inputs, { align: ['c', 'l', 'r'] })
 }

@@ -279,16 +279,17 @@ exports.createInputsTable = void 0;
 //  Helpers
 const markdown_table_1 = __nccwpck_require__(4701);
 function createInputsTable(metadata) {
-    const inputs = [['Input', 'Description', 'Default', 'Required']];
+    const inputs = [['Input', 'Description', 'Default/Required']];
     for (const [key, value] of Object.entries(metadata)) {
         inputs.push([
-            key,
+            `\`${key}\``,
             value.description,
-            value.default || '',
-            `\`${value.required}\``
+            value.required
+                ? '**required**'
+                : `\`${value.default}\``
         ]);
     }
-    return (0, markdown_table_1.markdownTable)(inputs, { align: ['c', 'l', 'r', 'c'] });
+    return (0, markdown_table_1.markdownTable)(inputs, { align: ['c', 'l', 'r'] });
 }
 exports.createInputsTable = createInputsTable;
 
@@ -308,7 +309,7 @@ function createOutputsTable(metadata) {
     const outputs = [['Output', 'Description']];
     for (const [key, value] of Object.entries(metadata)) {
         outputs.push([
-            key,
+            `\`${key}\``,
             value.description
         ]);
     }
