@@ -4,7 +4,7 @@
 
 interface ActionInput {
     description: string,
-    required?: boolean,
+    required: boolean,
     default?: string
 }
 

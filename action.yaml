@@ -1,10 +1,10 @@
-# ===============================
-# ACTION-MARKDOWN-TABLE-GENERATOR
-# ===============================
+# ===============
+# ACTION-MARKDOWN
+# ===============
 
-name: action-markdown-table-generator
+name: action-markdown
 author: Shresht7
-description: GitHub Action to generate markdown-tables for `inputs` and `outputs` parameters specified in the `action.yaml` metadata file.
+description: GitHub Action to expose parameters specified in the `action.yaml` metadata file.
 
 runs:
   using: node16
@@ -21,10 +21,12 @@ inputs:
   path:
     description: Path to the `action.yaml` metadata file
     default: ./action.yaml
-  
+    required: true
+
   prettyPrint:
     description: Beautify markdown table
-    default: false
+    default: "false"
+    required: false
 
 # Outputs
 # =======
