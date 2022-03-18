@@ -43,25 +43,32 @@ exports.action = void 0;
 //  Library
 const core = __importStar(__nccwpck_require__(2186));
 const library_1 = __nccwpck_require__(2172);
+const config_1 = __nccwpck_require__(88);
+//  Helpers
 const helpers_1 = __nccwpck_require__(863);
+const metadata_1 = __nccwpck_require__(5708);
 // =============
 // GITHUB ACTION
 // =============
 function action() {
     return __awaiter(this, void 0, void 0, function* () {
         //  Get Action Metadata
-        const metadata = yield (0, helpers_1.readActionYaml)();
+        const metadata = yield (0, helpers_1.readActionYaml)(config_1.path);
         //  Export the metadata object
-        core.setOutput('metadata', metadata);
-        //  Generate inputs-md-table
+        core.setOutput(metadata_1.outputs.metadata, metadata);
+        //  Export name, author and description
+        core.setOutput(metadata_1.outputs.name, metadata.name);
+        core.setOutput(metadata_1.outputs.author, metadata.author);
+        core.setOutput(metadata_1.outputs.description, metadata.description);
+        //  Export inputs-md-table
         if (metadata.inputs) {
-            const inputsMD = (0, library_1.createInputsTable)(metadata.inputs);
-            core.setOutput('inputs-md-table', JSON.stringify(inputsMD));
+            const inputsMD = (0, library_1.createInputsTable)(metadata.inputs, config_1.inputAlignment);
+            core.setOutput(metadata_1.outputs.inputsMdTable, JSON.stringify(inputsMD));
         }
-        //  Generate outputs-md-table
+        //  Export outputs-md-table
         if (metadata.outputs) {
-            const outputsMD = (0, library_1.createOutputsTable)(metadata.outputs);
-            core.setOutput('outputs-md-table', JSON.stringify(outputsMD));
+            const outputsMD = (0, library_1.createOutputsTable)(metadata.outputs, config_1.outputAlignment);
+            core.setOutput(metadata_1.outputs.outputsMdTable, JSON.stringify(outputsMD));
         }
     });
 }
@@ -102,10 +109,11 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.path = exports.src = void 0;
+exports.outputAlignment = exports.inputAlignment = exports.path = exports.src = void 0;
 //  Library
 const core = __importStar(__nccwpck_require__(2186));
 const nodePath = __importStar(__nccwpck_require__(9411));
+const metadata_1 = __nccwpck_require__(5708);
 // ======
 // CONFIG
 // ======
@@ -115,9 +123,13 @@ if (!workspace) {
     throw new Error('Invalid GITHUB_WORKSPACE. You need to checkout this repository using the actions/checkout@v3 github-action for the GITHUB_WORKSPACE environment variable.');
 }
 /** Path the source action metadata file. (default: `action.yaml`) */
-exports.src = core.getInput('src', { required: true });
-/** Workspace path of the action metadata file */
+exports.src = core.getInput(metadata_1.inputs.src, { required: true });
+/** Workspace path to the action metadata file */
 exports.path = nodePath.join(workspace, exports.src);
+/** Comma-separated array denoting the alignment of columns ['l' for left, 'c' for center, 'r' for right] */
+exports.inputAlignment = core.getInput(metadata_1.inputs.inputAlignment).split(',').map(x => x.trim());
+/** Comma-separated array denoting the alignment of columns ['l' for left, 'c' for center, 'r' for right] */
+exports.outputAlignment = core.getInput(metadata_1.inputs.outputAlignment).split(',').map(x => x.trim());
 
 
 /***/ }),
@@ -192,9 +204,8 @@ exports.readActionYaml = void 0;
 //  Library
 const fs = __importStar(__nccwpck_require__(7561));
 const jsYaml = __importStar(__nccwpck_require__(1917));
-const config_1 = __nccwpck_require__(88);
 /** Read action metadata file from the workspace */
-function readActionYaml(src = config_1.path) {
+function readActionYaml(src) {
     return __awaiter(this, void 0, void 0, function* () {
         const contents = yield fs.promises.readFile(src, { encoding: 'utf-8' });
         const yaml = jsYaml.load(contents);
@@ -278,20 +289,20 @@ run();
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.createInputsTable = void 0;
-//  Helpers
+//  Library
 const markdown_table_1 = __nccwpck_require__(4701);
-function createInputsTable(metadata) {
-    const inputs = [['Input', 'Description', 'Default/Required']];
+/** Create markdown-table string for the given array */
+function createInputsTable(metadata, align = ['l', 'l', 'r', 'c']) {
+    const inputs = [['Input', 'Description', 'Default', 'Required']];
     for (const [key, value] of Object.entries(metadata)) {
         inputs.push([
             `\`${key}\``,
             value.description,
-            value.required
-                ? '**required**'
-                : `\`${value.default}\``
+            `\`${value.default}\`` || '',
+            value.required ? '**required**' : ''
         ]);
     }
-    return (0, markdown_table_1.markdownTable)(inputs, { align: ['c', 'l', 'r'] });
+    return (0, markdown_table_1.markdownTable)(inputs, { align });
 }
 exports.createInputsTable = createInputsTable;
 
@@ -307,7 +318,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.createOutputsTable = void 0;
 //  Helpers
 const markdown_table_1 = __nccwpck_require__(4701);
-function createOutputsTable(metadata) {
+function createOutputsTable(metadata, align = ['c', 'l']) {
     const outputs = [['Output', 'Description']];
     for (const [key, value] of Object.entries(metadata)) {
         outputs.push([
@@ -315,7 +326,7 @@ function createOutputsTable(metadata) {
             value.description
         ]);
     }
-    return (0, markdown_table_1.markdownTable)(outputs, { align: ['c', 'l'] });
+    return (0, markdown_table_1.markdownTable)(outputs, { align });
 }
 exports.createOutputsTable = createOutputsTable;
 
@@ -347,6 +358,35 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 __exportStar(__nccwpck_require__(3097), exports);
 __exportStar(__nccwpck_require__(1178), exports);
+
+
+/***/ }),
+
+/***/ 5708:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+//  ===============
+//  ACTION METADATA
+//  ===============
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.outputs = exports.inputs = void 0;
+/** Action Inputs */
+exports.inputs = {
+    src: 'src',
+    inputAlignment: 'input-table-alignment',
+    outputAlignment: 'output-table-alignment'
+};
+/** Action Outputs */
+exports.outputs = {
+    metadata: 'metadata',
+    name: 'name',
+    author: 'author',
+    description: 'description',
+    inputsMdTable: 'inputs-md-table',
+    outputsMdTable: 'outputs-md-table'
+};
 
 
 /***/ }),
