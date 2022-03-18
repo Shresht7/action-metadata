@@ -24,17 +24,22 @@ A GitHub Action to expose action metadata of a GitHub Action!
 ## Inputs
 
 <!-- slot: inputs -->
-| Input | Description                      | Default/Required |
-| :---: | :------------------------------- | ---------------: |
-| `src` | Path to the action metadata file |     **required** |
+| Input                    | Description                                                                                           |         Default |   Required   |
+| :----------------------- | :---------------------------------------------------------------------------------------------------- | --------------: | :----------: |
+| `src`                    | Path to the action metadata file                                                                      | `./action.yaml` | **required** |
+| `input-table-alignment`  | Comma-separated array denoting the alignment of columns ['l' for left, 'c' for center, 'r' for right] |       `l,l,r,c` |              |
+| `output-table-alignment` | Comma-separated array denoting the alignment of columns ['l' for left, 'c' for center, 'r' for right] |       `l,l,r,c` |              |
 <!-- /slot -->
 
 ## Outputs
 
 <!-- slot: outputs -->
-|       Output       | Description                                                        |
-| :----------------: | :----------------------------------------------------------------- |
-|     `metadata`     | stringified JSON representation of the entire action metadata file |
-|  `inputs-md-table` | Markdown table of the action inputs                                |
+| Output             | Description                                                        |
+| :----------------- | :----------------------------------------------------------------- |
+| `metadata`         | stringified JSON representation of the entire action metadata file |
+| `name`             | Name of the GitHub Action                                          |
+| `author`           | Name of the action's author                                        |
+| `description`      | A short description of the action                                  |
+| `inputs-md-table`  | Markdown table of the action inputs                                |
 | `outputs-md-table` | Markdown table of the action outputs                               |
 <!-- /slot -->
