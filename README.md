@@ -1,7 +1,8 @@
 # Action Markdown
 -----------------
 
-GitHub Action to expose parameters specified in the action metadata file.
+<!-- slot: description -->
+<!-- /slot -->
 
 ## Usage
 
@@ -32,6 +33,6 @@ GitHub Action to expose parameters specified in the action metadata file.
 <!-- slot: outputs -->
 |      Output      | Description                          |
 | :--------------: | :----------------------------------- |
-|  inputs-md-table | Markdown table of the action inputs  |
+| inputs-md-table  | Markdown table of the action inputs  |
 | outputs-md-table | Markdown table of the action outputs |
 <!-- /slot -->
