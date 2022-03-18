@@ -16,6 +16,3 @@ export const src = core.getInput('src', { required: true })
 
 /** Workspace path of the action metadata file */
 export const path = nodePath.join(workspace, src)
-
-/** Boolean to determine if this action should pretty-print the markdown tables */
-export const prettyPrint = core.getBooleanInput('prettyPrint')

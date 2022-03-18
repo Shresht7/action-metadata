@@ -19,14 +19,9 @@ branding:
 
 inputs:
   src:
-    description: Path to the `action.yaml` metadata file
+    description: Path to the action metadata file
     default: ./action.yaml
     required: true
-
-  prettyPrint:
-    description: Beautify markdown table
-    default: "false"
-    required: false
 
 # Outputs
 # =======

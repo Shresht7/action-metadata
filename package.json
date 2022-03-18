@@ -1,7 +1,7 @@
 {
   "name": "action-markdown",
   "version": "0.1.0",
-  "description": "GitHub Action to expose parameters from action.yaml metadata file",
+  "description": "GitHub Action to expose parameters from action metadata file",
   "main": "lib/index.js",
   "scripts": {
     "tsc": "tsc",
@@ -27,6 +27,7 @@
   },
   "dependencies": {
     "@actions/core": "^1.6.0",
-    "js-yaml": "^4.1.0"
+    "js-yaml": "^4.1.0",
+    "markdown-table": "^3.0.2"
   }
 }

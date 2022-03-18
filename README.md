@@ -1,7 +1,7 @@
 # Action Markdown
 -----------------
 
-GitHub Action to expose parameters specified in the `action.yaml` metadata file.
+GitHub Action to expose parameters specified in the action metadata file.
 
 ## Usage
 
@@ -24,10 +24,10 @@ GitHub Action to expose parameters specified in the `action.yaml` metadata file.
 <!-- slot: inputs -->
 
 
-| input | description | default |
-| ----- | ----------- | ------- |
-| path | Path to the `action.yaml` metadata file | **required** |
-| prettyPrint | Beautify markdown table | `false` |
+| input       | description                             | default      |
+| ----------- | --------------------------------------- | ------------ |
+| path        | Path to the `action.yaml` metadata file | **required** |
+| prettyPrint | Beautify markdown table                 | `false`      |
 
 
 <!-- /slot -->
@@ -37,9 +37,9 @@ GitHub Action to expose parameters specified in the `action.yaml` metadata file.
 <!-- slot: outputs -->
 
 
-| outputs | description |
-| ------- | ----------- |
-| inputs-md-table | Markdown table of the action inputs |
+| outputs          | description                          |
+| ---------------- | ------------------------------------ |
+| inputs-md-table  | Markdown table of the action inputs  |
 | outputs-md-table | Markdown table of the action outputs |
 
 

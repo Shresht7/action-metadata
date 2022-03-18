@@ -2,13 +2,13 @@
 //  TYPE DEFINITIONS
 //  ================
 
-interface ActionInput {
+export interface ActionInput {
     description: string,
     required: boolean,
     default?: string
 }
 
-interface ActionOutput {
+export interface ActionOutput {
     description: string
 }
 

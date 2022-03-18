@@ -3,4 +3,3 @@
 //  ================
 
 export * from './readActionYaml'
-export * from './createMarkdownTable'
