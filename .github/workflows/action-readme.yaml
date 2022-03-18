@@ -1,8 +1,8 @@
-# ===============================
-# ACTION MARKDOWN TABLE GENERATOR
-# ===============================
+# ===============
+# ACTION MARKDOWN
+# ===============
 
-name: Markdown-Slots
+name: Action-Markdown
 
 # Activation Events
 # =================
@@ -20,41 +20,50 @@ on:
 # ====
 
 jobs:
-  markdown-slots:
+  update-readme:
     runs-on: ubuntu-latest
     steps:
-
-      # Actions Checkout ✅
-      # ===================
+      # Checkout Repository ✅
+      # ======================
 
       - name: checkout
         uses: actions/checkout@v3
 
-      # Generate Inputs Markdown Table 📜
-      # =================================
+      # Generate Action Markdown Outputs 📜
+      # ===================================
 
-      - name: action-md-table
-        id: md-table
-        uses: Shresht7/action-markdown-table-generator@main
+      - name: generate action markdown
+        id: action-md
+        uses: Shresht7/action-markdown@main
 
       # Markdown Slots 📋
       # =================
 
-      - name: markdown-slots
+      - name: update readme slots
         id: markdown-slots
         uses: Shresht7/markdown-slots@main
         with:
           slots: |
-            inputs: ${{ steps.md-table.outputs.inputs-md-table }}
-            outputs: ${{ steps.md-table.outputs.outputs-md-table }}
+            inputs: ${{ steps.action-md.outputs.inputs-md-table }}
+            outputs: ${{ steps.action-md.outputs.outputs-md-table }}
 
       # Push Changes 🌎
       # ===============
 
+      - name: check for changes
+        id: git-diff
+        run: |
+          if git diff --exit-code; then
+            echo "::set-output name=changes_exist::false"
+          else
+            echo "::set-output name=changes_exist::true"
+          fi
+
       - name: push
+        if: ${{ steps.git-diff.outputs.changes_exist }}
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email 'github-actions[bot]@users.noreply.github.com'
           git add .
           git commit -m 'Update README.md'
-          git push        
+          git push
