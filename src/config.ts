@@ -6,10 +6,16 @@ import * as nodePath from 'node:path'
 // CONFIG
 // ======
 
+/** GITHUB_WORKSPACE */
 const workspace = process.env.GITHUB_WORKSPACE || ''
 
-export const target = core.getInput('path')
+if (!workspace) { throw new Error('Invalid GITHUB_WORKSPACE. You need to checkout this repository using the actions/checkout@v3 github-action for the GITHUB_WORKSPACE environment variable.') }
 
-export const path = nodePath.join(workspace, target)
+/** Path the source action metadata file. (default: `action.yaml`) */
+export const src = core.getInput('src', { required: true })
 
+/** Workspace path of the action metadata file */
+export const path = nodePath.join(workspace, src)
+
+/** Boolean to determine if this action should pretty-print the markdown tables */
 export const prettyPrint = core.getBooleanInput('prettyPrint')

@@ -18,7 +18,7 @@ branding:
 # ======
 
 inputs:
-  path:
+  src:
     description: Path to the `action.yaml` metadata file
     default: ./action.yaml
     required: true
