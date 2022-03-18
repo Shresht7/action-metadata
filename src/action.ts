@@ -1,7 +1,10 @@
 //  Library
 import * as core from '@actions/core'
 import { createInputsTable, createOutputsTable } from './library'
+
+//  Helpers
 import { readActionYaml } from './helpers'
+import { outputs } from './metadata'
 
 // =============
 // GITHUB ACTION
@@ -13,23 +16,23 @@ export async function action() {
     const metadata = await readActionYaml()
 
     //  Export the metadata object
-    core.setOutput('metadata', metadata)
+    core.setOutput(outputs.metadata, metadata)
 
     //  Export name, author and description
-    core.setOutput('name', metadata.name)
-    core.setOutput('author', metadata.author)
-    core.setOutput('description', metadata.description)
+    core.setOutput(outputs.name, metadata.name)
+    core.setOutput(outputs.author, metadata.author)
+    core.setOutput(outputs.description, metadata.description)
 
     //  Export inputs-md-table
     if (metadata.inputs) {
         const inputsMD = createInputsTable(metadata.inputs)
-        core.setOutput('inputs-md-table', JSON.stringify(inputsMD))
+        core.setOutput(outputs.inputsMdTable, JSON.stringify(inputsMD))
     }
 
     //  Export outputs-md-table
     if (metadata.outputs) {
         const outputsMD = createOutputsTable(metadata.outputs)
-        core.setOutput('outputs-md-table', JSON.stringify(outputsMD))
+        core.setOutput(outputs.outputsMdTable, JSON.stringify(outputsMD))
     }
 
 }
