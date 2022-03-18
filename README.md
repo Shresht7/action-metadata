@@ -2,6 +2,7 @@
 -----------------
 
 <!-- slot: description -->
+null
 <!-- /slot -->
 
 ## Usage
@@ -34,6 +35,6 @@
 |       Output       | Description                                                 |
 | :----------------: | :---------------------------------------------------------- |
 |     `metadata`     | stringified JSON representation of the action metadata file |
-| `inputs-md-table`  | Markdown table of the action inputs                         |
+|  `inputs-md-table` | Markdown table of the action inputs                         |
 | `outputs-md-table` | Markdown table of the action outputs                        |
 <!-- /slot -->
