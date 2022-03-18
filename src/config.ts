@@ -2,6 +2,7 @@
 import * as core from '@actions/core'
 import * as nodePath from 'node:path'
 import { inputs } from './metadata'
+import type { alignment } from './types'
 
 // ======
 // CONFIG
@@ -17,3 +18,8 @@ export const src = core.getInput(inputs.src, { required: true })
 
 /** Workspace path to the action metadata file */
 export const path = nodePath.join(workspace, src)
+
+/** Comma-separated array denoting the alignment of columns ['l' for left, 'c' for center, 'r' for right] */
+export const inputAlignment = core.getInput(inputs.inputAlignment).split(',').map(x => x.trim()) as alignment[]
+/** Comma-separated array denoting the alignment of columns ['l' for left, 'c' for center, 'r' for right] */
+export const outputAlignment = core.getInput(inputs.outputAlignment).split(',').map(x => x.trim()) as alignment[]

@@ -2,9 +2,9 @@
 import { markdownTable } from 'markdown-table'
 
 //  Types
-import type { ActionOutput } from '../types'
+import type { ActionOutput, alignment } from '../types'
 
-export function createOutputsTable(metadata: Record<string, ActionOutput>) {
+export function createOutputsTable(metadata: Record<string, ActionOutput>, align: alignment[] = ['c', 'l']) {
     const outputs = [['Output', 'Description']]
     for (const [key, value] of Object.entries(metadata)) {
         outputs.push([
@@ -12,5 +12,5 @@ export function createOutputsTable(metadata: Record<string, ActionOutput>) {
             value.description
         ])
     }
-    return markdownTable(outputs, { align: ['c', 'l'] })
+    return markdownTable(outputs, { align })
 }

@@ -27,3 +27,5 @@ export interface Action {
     inputs?: Record<string, ActionInput>
     outputs?: Record<string, ActionOutput>
 }
+
+export type alignment = 'l' | 'c' | 'r'

@@ -1,6 +1,7 @@
 //  Library
 import * as core from '@actions/core'
 import { createInputsTable, createOutputsTable } from './library'
+import { inputAlignment, outputAlignment } from './config'
 
 //  Helpers
 import { readActionYaml } from './helpers'
@@ -25,13 +26,13 @@ export async function action() {
 
     //  Export inputs-md-table
     if (metadata.inputs) {
-        const inputsMD = createInputsTable(metadata.inputs)
+        const inputsMD = createInputsTable(metadata.inputs, inputAlignment)
         core.setOutput(outputs.inputsMdTable, JSON.stringify(inputsMD))
     }
 
     //  Export outputs-md-table
     if (metadata.outputs) {
-        const outputsMD = createOutputsTable(metadata.outputs)
+        const outputsMD = createOutputsTable(metadata.outputs, outputAlignment)
         core.setOutput(outputs.outputsMdTable, JSON.stringify(outputsMD))
     }
 

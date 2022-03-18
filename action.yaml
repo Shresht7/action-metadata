@@ -23,6 +23,16 @@ inputs:
     default: ./action.yaml
     required: true
 
+  input-table-alignment:
+    description: Comma-separated array denoting the alignment of columns ['l' for left, 'c' for center, 'r' for right]
+    default: "l,l,r,c"
+    required: false
+
+  output-table-alignment:
+    description: Comma-separated array denoting the alignment of columns ['l' for left, 'c' for center, 'r' for right]
+    default: "l,l,r,c"
+    required: false
+
 # Outputs
 # =======
 
