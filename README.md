@@ -23,16 +23,17 @@
 ## Inputs
 
 <!-- slot: inputs -->
-| Input | Description                      |       Default | Required |
-| :---: | :------------------------------- | ------------: | :------: |
-|  src  | Path to the action metadata file | ./action.yaml |  `true`  |
+| Input | Description                      | Default/Required |
+| :---: | :------------------------------- | ---------------: |
+| `src` | Path to the action metadata file |     **required** |
 <!-- /slot -->
 
 ## Outputs
 
 <!-- slot: outputs -->
-|      Output      | Description                          |
-| :--------------: | :----------------------------------- |
-| inputs-md-table  | Markdown table of the action inputs  |
-| outputs-md-table | Markdown table of the action outputs |
+|       Output       | Description                                                 |
+| :----------------: | :---------------------------------------------------------- |
+|     `metadata`     | stringified JSON representation of the action metadata file |
+| `inputs-md-table`  | Markdown table of the action inputs                         |
+| `outputs-md-table` | Markdown table of the action outputs                        |
 <!-- /slot -->
