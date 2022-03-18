@@ -261,7 +261,6 @@ function run() {
         catch (err) {
             const error = err;
             core.setFailed(error);
-            core.error(error);
             console.error(error);
         }
     });
@@ -308,7 +307,7 @@ exports.createOutputsTable = void 0;
 const markdown_table_1 = __nccwpck_require__(4701);
 function createOutputsTable(metadata) {
     const outputs = [['Output', 'Description']];
-    for (const [key, value] of Object.entries(metadata.outputs)) {
+    for (const [key, value] of Object.entries(metadata)) {
         outputs.push([
             key,
             value.description
