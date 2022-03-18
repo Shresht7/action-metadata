@@ -12,8 +12,9 @@ async function run() {
         await action()
     } catch (err) {
         const error = err as Error
-        core.error(error)
         core.setFailed(error)
+        core.error(error)
+        console.error(error)
     }
 }
 

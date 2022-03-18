@@ -12,6 +12,8 @@ export async function action() {
     //  Get Action Metadata
     const metadata = await readActionYaml()
 
+    console.log(metadata)
+
     //  Generate inputs-md-table
     if (metadata.inputs) {
         const inputsMD = createInputsTable(metadata.inputs)

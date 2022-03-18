@@ -51,6 +51,7 @@ function action() {
     return __awaiter(this, void 0, void 0, function* () {
         //  Get Action Metadata
         const metadata = yield (0, helpers_1.readActionYaml)();
+        console.log(metadata);
         //  Generate inputs-md-table
         if (metadata.inputs) {
             const inputsMD = (0, library_1.createInputsTable)(metadata.inputs);
@@ -196,7 +197,6 @@ function readActionYaml(src = config_1.path) {
     return __awaiter(this, void 0, void 0, function* () {
         const contents = yield fs.promises.readFile(src, { encoding: 'utf-8' });
         const yaml = jsYaml.load(contents);
-        console.log(yaml);
         return yaml;
     });
 }
@@ -260,8 +260,9 @@ function run() {
         }
         catch (err) {
             const error = err;
-            core.error(error);
             core.setFailed(error);
+            core.error(error);
+            console.error(error);
         }
     });
 }
