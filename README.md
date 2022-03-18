@@ -55,11 +55,10 @@ The action can run on auto-pilot using the default parameters. To change any inp
 ```
 
 <!-- slot: inputs -->
-| Input                    | Description                                                                                           |         Default |   Required   |
-| :----------------------- | :---------------------------------------------------------------------------------------------------- | --------------: | :----------: |
-| `src`                    | Path to the action metadata file                                                                      | `./action.yaml` | **required** |
-| `input-table-alignment`  | Comma-separated array denoting the alignment of columns ['l' for left, 'c' for center, 'r' for right] |       `l,l,r,c` |              |
-| `output-table-alignment` | Comma-separated array denoting the alignment of columns ['l' for left, 'c' for center, 'r' for right] |       `l,l,r,c` |              |
+| Input                    | Description                                                                                           |   Default | Required |
+| :----------------------- | :---------------------------------------------------------------------------------------------------- | --------: | :------: |
+| `input-table-alignment`  | Comma-separated array denoting the alignment of columns ['l' for left, 'c' for center, 'r' for right] | `l,l,r,c` |          |
+| `output-table-alignment` | Comma-separated array denoting the alignment of columns ['l' for left, 'c' for center, 'r' for right] | `l,l,r,c` |          |
 <!-- /slot -->
 
 ## Outputs
