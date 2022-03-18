@@ -24,7 +24,7 @@ GitHub Action to expose parameters specified in the action metadata file.
 <!-- slot: inputs -->
 
 
-| input       | description                             | default      |
+| input       | description                             | Default      |
 | ----------- | --------------------------------------- | ------------ |
 | path        | Path to the `action.yaml` metadata file | **required** |
 | prettyPrint | Beautify markdown table                 | `false`      |

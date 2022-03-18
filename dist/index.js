@@ -51,7 +51,6 @@ function action() {
     return __awaiter(this, void 0, void 0, function* () {
         //  Get Action Metadata
         const metadata = yield (0, helpers_1.readActionYaml)();
-        console.log(metadata);
         //  Generate inputs-md-table
         if (metadata.inputs) {
             const inputsMD = (0, library_1.createInputsTable)(metadata.inputs);
