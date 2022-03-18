@@ -1,396 +1,6 @@
 require('./sourcemap-register.js');/******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 9139:
-/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
-
-"use strict";
-
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.action = void 0;
-//  Library
-const core = __importStar(__nccwpck_require__(2186));
-const library_1 = __nccwpck_require__(2172);
-const config_1 = __nccwpck_require__(88);
-//  Helpers
-const helpers_1 = __nccwpck_require__(863);
-const metadata_1 = __nccwpck_require__(5708);
-// =============
-// GITHUB ACTION
-// =============
-function action() {
-    return __awaiter(this, void 0, void 0, function* () {
-        //  Get Action Metadata
-        const metadata = yield (0, helpers_1.readActionYaml)(config_1.path);
-        //  Export the metadata object
-        core.setOutput(metadata_1.outputs.metadata, metadata);
-        //  Export name, author and description
-        core.setOutput(metadata_1.outputs.name, metadata.name);
-        core.setOutput(metadata_1.outputs.author, metadata.author);
-        core.setOutput(metadata_1.outputs.description, metadata.description);
-        //  Export inputs-md-table
-        if (metadata.inputs) {
-            const inputsMD = (0, library_1.createInputsTable)(metadata.inputs, config_1.inputAlignment);
-            core.setOutput(metadata_1.outputs.inputsMdTable, JSON.stringify(inputsMD));
-        }
-        //  Export outputs-md-table
-        if (metadata.outputs) {
-            const outputsMD = (0, library_1.createOutputsTable)(metadata.outputs, config_1.outputAlignment);
-            core.setOutput(metadata_1.outputs.outputsMdTable, JSON.stringify(outputsMD));
-        }
-    });
-}
-exports.action = action;
-//  -----------------
-exports["default"] = action;
-//  -----------------
-
-
-/***/ }),
-
-/***/ 88:
-/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
-
-"use strict";
-
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.outputAlignment = exports.inputAlignment = exports.path = exports.src = void 0;
-//  Library
-const core = __importStar(__nccwpck_require__(2186));
-const nodePath = __importStar(__nccwpck_require__(9411));
-const metadata_1 = __nccwpck_require__(5708);
-// ======
-// CONFIG
-// ======
-/** GITHUB_WORKSPACE */
-const workspace = process.env.GITHUB_WORKSPACE || '';
-if (!workspace) {
-    throw new Error('Invalid GITHUB_WORKSPACE. You need to checkout this repository using the actions/checkout@v3 github-action for the GITHUB_WORKSPACE environment variable.');
-}
-/** Path the source action metadata file. (default: `action.yaml`) */
-exports.src = core.getInput(metadata_1.inputs.src, { required: true });
-/** Workspace path to the action metadata file */
-exports.path = nodePath.join(workspace, exports.src);
-/** Comma-separated array denoting the alignment of columns ['l' for left, 'c' for center, 'r' for right] */
-exports.inputAlignment = core.getInput(metadata_1.inputs.inputAlignment).split(',').map(x => x.trim());
-/** Comma-separated array denoting the alignment of columns ['l' for left, 'c' for center, 'r' for right] */
-exports.outputAlignment = core.getInput(metadata_1.inputs.outputAlignment).split(',').map(x => x.trim());
-
-
-/***/ }),
-
-/***/ 863:
-/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
-
-"use strict";
-
-//  ================
-//  HELPER FUNCTIONS
-//  ================
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __exportStar = (this && this.__exportStar) || function(m, exports) {
-    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-__exportStar(__nccwpck_require__(7871), exports);
-
-
-/***/ }),
-
-/***/ 7871:
-/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
-
-"use strict";
-
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.readActionYaml = void 0;
-//  Library
-const fs = __importStar(__nccwpck_require__(7561));
-const jsYaml = __importStar(__nccwpck_require__(1917));
-/** Read action metadata file from the workspace */
-function readActionYaml(src) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const contents = yield fs.promises.readFile(src, { encoding: 'utf-8' });
-        const yaml = jsYaml.load(contents);
-        return yaml;
-    });
-}
-exports.readActionYaml = readActionYaml;
-
-
-/***/ }),
-
-/***/ 4822:
-/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
-
-"use strict";
-
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-//  Library
-const core = __importStar(__nccwpck_require__(2186));
-const action_1 = __importDefault(__nccwpck_require__(9139));
-//  ====
-//  MAIN
-//  ====
-/** Main entrypoint for the GitHub Action */
-function run() {
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            yield (0, action_1.default)();
-        }
-        catch (err) {
-            const error = err;
-            core.setFailed(error);
-            console.error(error);
-        }
-    });
-}
-run();
-
-
-/***/ }),
-
-/***/ 3097:
-/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.createInputsTable = void 0;
-//  Library
-const markdown_table_1 = __nccwpck_require__(4701);
-/** Create markdown-table string for the given array */
-function createInputsTable(metadata, align = ['l', 'l', 'r', 'c']) {
-    const inputs = [['Input', 'Description', 'Default', 'Required']];
-    for (const [key, value] of Object.entries(metadata)) {
-        inputs.push([
-            `\`${key}\``,
-            value.description,
-            `\`${value.default}\`` || '',
-            value.required ? '**required**' : ''
-        ]);
-    }
-    return (0, markdown_table_1.markdownTable)(inputs, { align });
-}
-exports.createInputsTable = createInputsTable;
-
-
-/***/ }),
-
-/***/ 1178:
-/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.createOutputsTable = void 0;
-//  Helpers
-const markdown_table_1 = __nccwpck_require__(4701);
-function createOutputsTable(metadata, align = ['c', 'l']) {
-    const outputs = [['Output', 'Description']];
-    for (const [key, value] of Object.entries(metadata)) {
-        outputs.push([
-            `\`${key}\``,
-            value.description
-        ]);
-    }
-    return (0, markdown_table_1.markdownTable)(outputs, { align });
-}
-exports.createOutputsTable = createOutputsTable;
-
-
-/***/ }),
-
-/***/ 2172:
-/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
-
-"use strict";
-
-//  =======
-//  LIBRARY
-//  =======
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __exportStar = (this && this.__exportStar) || function(m, exports) {
-    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-__exportStar(__nccwpck_require__(3097), exports);
-__exportStar(__nccwpck_require__(1178), exports);
-
-
-/***/ }),
-
-/***/ 5708:
-/***/ ((__unused_webpack_module, exports) => {
-
-"use strict";
-
-//  ===============
-//  ACTION METADATA
-//  ===============
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.outputs = exports.inputs = void 0;
-/** Action Inputs */
-exports.inputs = {
-    src: 'src',
-    inputAlignment: 'input-table-alignment',
-    outputAlignment: 'output-table-alignment'
-};
-/** Action Outputs */
-exports.outputs = {
-    metadata: 'metadata',
-    name: 'name',
-    author: 'author',
-    description: 'description',
-    inputsMdTable: 'inputs-md-table',
-    outputsMdTable: 'outputs-md-table'
-};
-
-
-/***/ }),
-
 /***/ 7351:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
@@ -6053,6 +5663,396 @@ exports.debug = debug; // for test
 
 /***/ }),
 
+/***/ 7672:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.action = void 0;
+//  Library
+const core = __importStar(__nccwpck_require__(2186));
+const library_1 = __nccwpck_require__(4048);
+const config_1 = __nccwpck_require__(6373);
+//  Helpers
+const helpers_1 = __nccwpck_require__(3202);
+const metadata_1 = __nccwpck_require__(3252);
+// =============
+// GITHUB ACTION
+// =============
+function action() {
+    return __awaiter(this, void 0, void 0, function* () {
+        //  Get Action Metadata
+        const metadata = yield (0, helpers_1.readActionYaml)(config_1.path);
+        //  Export the metadata object
+        core.setOutput(metadata_1.outputs.metadata, metadata);
+        //  Export name, author and description
+        core.setOutput(metadata_1.outputs.name, metadata.name);
+        core.setOutput(metadata_1.outputs.author, metadata.author);
+        core.setOutput(metadata_1.outputs.description, metadata.description);
+        //  Export inputs-md-table
+        if (metadata.inputs) {
+            const inputsMD = (0, library_1.createInputsTable)(metadata.inputs, config_1.inputAlignment);
+            core.setOutput(metadata_1.outputs.inputsMdTable, JSON.stringify(inputsMD));
+        }
+        //  Export outputs-md-table
+        if (metadata.outputs) {
+            const outputsMD = (0, library_1.createOutputsTable)(metadata.outputs, config_1.outputAlignment);
+            core.setOutput(metadata_1.outputs.outputsMdTable, JSON.stringify(outputsMD));
+        }
+    });
+}
+exports.action = action;
+//  -----------------
+exports["default"] = action;
+//  -----------------
+
+
+/***/ }),
+
+/***/ 6373:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.outputAlignment = exports.inputAlignment = exports.path = exports.src = void 0;
+//  Library
+const core = __importStar(__nccwpck_require__(2186));
+const nodePath = __importStar(__nccwpck_require__(9411));
+const metadata_1 = __nccwpck_require__(3252);
+// ======
+// CONFIG
+// ======
+/** GITHUB_WORKSPACE */
+const workspace = process.env.GITHUB_WORKSPACE || '';
+if (!workspace) {
+    throw new Error('Invalid GITHUB_WORKSPACE. You need to checkout this repository using the actions/checkout@v3 github-action for the GITHUB_WORKSPACE environment variable.');
+}
+/** Path the source action metadata file. (default: `action.yaml`) */
+exports.src = core.getInput(metadata_1.inputs.src, { required: true });
+/** Workspace path to the action metadata file */
+exports.path = nodePath.join(workspace, exports.src);
+/** Comma-separated array denoting the alignment of columns ['l' for left, 'c' for center, 'r' for right] */
+exports.inputAlignment = core.getInput(metadata_1.inputs.inputAlignment).split(',').map(x => x.trim());
+/** Comma-separated array denoting the alignment of columns ['l' for left, 'c' for center, 'r' for right] */
+exports.outputAlignment = core.getInput(metadata_1.inputs.outputAlignment).split(',').map(x => x.trim());
+
+
+/***/ }),
+
+/***/ 3202:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+//  ================
+//  HELPER FUNCTIONS
+//  ================
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __exportStar = (this && this.__exportStar) || function(m, exports) {
+    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+__exportStar(__nccwpck_require__(5265), exports);
+
+
+/***/ }),
+
+/***/ 5265:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.readActionYaml = void 0;
+//  Library
+const fs = __importStar(__nccwpck_require__(7561));
+const jsYaml = __importStar(__nccwpck_require__(1917));
+/** Read action metadata file from the workspace */
+function readActionYaml(src) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const contents = yield fs.promises.readFile(src, { encoding: 'utf-8' });
+        const yaml = jsYaml.load(contents);
+        return yaml;
+    });
+}
+exports.readActionYaml = readActionYaml;
+
+
+/***/ }),
+
+/***/ 6144:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+//  Library
+const core = __importStar(__nccwpck_require__(2186));
+const action_1 = __importDefault(__nccwpck_require__(7672));
+//  ====
+//  MAIN
+//  ====
+/** Main entrypoint for the GitHub Action */
+function run() {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            yield (0, action_1.default)();
+        }
+        catch (err) {
+            const error = err;
+            core.setFailed(error);
+            console.error(error);
+        }
+    });
+}
+run();
+
+
+/***/ }),
+
+/***/ 3422:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.createInputsTable = void 0;
+//  Library
+const markdown_table_1 = __nccwpck_require__(4701);
+/** Create markdown-table string for the given array */
+function createInputsTable(metadata, align = ['l', 'l', 'r', 'c']) {
+    const inputs = [['Input', 'Description', 'Default', 'Required']];
+    for (const [key, value] of Object.entries(metadata)) {
+        inputs.push([
+            `\`${key}\``,
+            value.description,
+            `\`${value.default}\`` || '',
+            value.required ? '**required**' : ''
+        ]);
+    }
+    return (0, markdown_table_1.markdownTable)(inputs, { align });
+}
+exports.createInputsTable = createInputsTable;
+
+
+/***/ }),
+
+/***/ 5598:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.createOutputsTable = void 0;
+//  Helpers
+const markdown_table_1 = __nccwpck_require__(4701);
+function createOutputsTable(metadata, align = ['c', 'l']) {
+    const outputs = [['Output', 'Description']];
+    for (const [key, value] of Object.entries(metadata)) {
+        outputs.push([
+            `\`${key}\``,
+            value.description
+        ]);
+    }
+    return (0, markdown_table_1.markdownTable)(outputs, { align });
+}
+exports.createOutputsTable = createOutputsTable;
+
+
+/***/ }),
+
+/***/ 4048:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+//  =======
+//  LIBRARY
+//  =======
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __exportStar = (this && this.__exportStar) || function(m, exports) {
+    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+__exportStar(__nccwpck_require__(3422), exports);
+__exportStar(__nccwpck_require__(5598), exports);
+
+
+/***/ }),
+
+/***/ 3252:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+//  ===============
+//  ACTION METADATA
+//  ===============
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.outputs = exports.inputs = void 0;
+/** Action Inputs */
+exports.inputs = {
+    src: 'src',
+    inputAlignment: 'input-table-alignment',
+    outputAlignment: 'output-table-alignment'
+};
+/** Action Outputs */
+exports.outputs = {
+    metadata: 'metadata',
+    name: 'name',
+    author: 'author',
+    description: 'description',
+    inputsMdTable: 'inputs-md-table',
+    outputsMdTable: 'outputs-md-table'
+};
+
+
+/***/ }),
+
 /***/ 9491:
 /***/ ((module) => {
 
@@ -6611,7 +6611,7 @@ function toAlignment(value) {
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module is referenced by other modules so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(4822);
+/******/ 	var __webpack_exports__ = __nccwpck_require__(6144);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()
