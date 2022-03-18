@@ -58,6 +58,7 @@ jobs:
           else
             echo "::set-output name=changes_exist::true"
           fi
+          git diff --exit-code
 
       - name: push
         if: ${{ steps.git-diff.outputs.changes_exist }}
