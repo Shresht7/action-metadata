@@ -1,5 +1,10 @@
-# Action Metadata
------------------
+<h1 align='center'>
+  Action Metadata
+</h1>
+
+---
+
+<br />
 
 <!-- slot: description -->
 A GitHub Action to expose action metadata of a GitHub Action!
@@ -7,21 +12,48 @@ A GitHub Action to expose action metadata of a GitHub Action!
 
 ## Usage
 
-```yaml
-- name: action-metadata
-  id: action-metadata
-  uses: Shresht7/action-metadata@main
-  with:
-    path: ./action.yml # Path to the action metadata file (default: ./action.yaml)
+Use this action as a step in a workflow job and give it an `id` (`action-metadata` in the following examples).
 
-- name: some-other-action
-  uses: user/some-other-action@v1
+```yaml
+- name: action-metadata               # Name of the workflow step
+  id: action-metadata                 # Give this step an id to reference it later for outputs
+  uses: Shresht7/action-metadata@v1   # Use this action
+```
+
+The action will expose the [metadata][1] as an `output` which you can reference in subsequent steps using an [expression][2] `${{ steps.<given_id>.outputs.<output> }}`.
+For a list of all available outputs see [Outputs](#outputs).
+
+
+```yaml
+- name: some-other-action           
+  uses: user/some-other-action@v1     # Not a real user and/or action
   with:
     description: ${{ steps.action-metadata.outputs.description }}
     inputs: ${{ steps.action-metadata.outputs.inputs-md-table }}
 ```
 
+The entire [metadata][1] object is available as a stringified JSON (i.e. `string`) as the `metadata` output. You will need to parse this string to use it as an object using [`fromJSON`][3] in an [expression][2] or `JSON.parse` in your action.
+
+```yaml
+- name: some-other-action
+  uses: user/some-other-action@v1     # Not a real user and/or action
+  with:
+    # Use the fromJSON function in the expression to parse metadata as JSON
+    name: ${{ fromJSON(steps.action-metadata.outputs.metadata).author }}
+```
+
 ## Inputs
+
+The action can run on auto-pilot using the default parameters. To change any inputs, pass them along the workflow step.
+
+```yaml
+- name: action-metadata
+  id: action-metadata
+  uses: Shresht7/action-metadata@v1
+  with:
+    src: ./action.yml
+    input-table-alignment: 'c,l,r,l'
+```
 
 <!-- slot: inputs -->
 | Input                    | Description                                                                                           |         Default |   Required   |
@@ -33,6 +65,12 @@ A GitHub Action to expose action metadata of a GitHub Action!
 
 ## Outputs
 
+The action exposes the entire metadata yaml (`metadata`) as a stringified JSON. To make the most of this output you will need to parse it using [`fromJSON`][3] or `JSON.parse` functions.
+
+The `name`, `author` and `description` fields, in addition to being available through the parsed `metadata`, are also exposed on their own.
+
+This action also exposes markdown-tables for the `input` and `output` parameters specified in the metadata file. This was the primary motivation for this action.
+
 <!-- slot: outputs -->
 | Output             | Description                                                        |
 | :----------------- | :----------------------------------------------------------------- |
@@ -43,3 +81,93 @@ A GitHub Action to expose action metadata of a GitHub Action!
 | `inputs-md-table`  | Markdown table of the action inputs                                |
 | `outputs-md-table` | Markdown table of the action outputs                               |
 <!-- /slot -->
+
+## Example
+
+The [Inputs](#inputs) and [Outputs](#outputs) tables you see in this readme were generated using this action in conjunction with [markdown-slots][4]. To see the complete workflow, see [action-readme.yaml][5].
+
+<details>
+<summary>
+  or click here
+</summary>
+
+```yaml
+# =============
+# ACTION README
+# =============
+
+name: Action-Readme
+
+# Activation Events
+# =================
+
+on:
+  # When the action.yaml file changes
+  push:
+    paths:
+      - action.yaml
+
+  # Manual workflow dispatch
+  workflow_dispatch:
+
+# Jobs
+# ====
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout Repository ✅
+      # ======================
+
+      - name: checkout
+        uses: actions/checkout@v3
+
+      # Retrieve Action Metadata 📜
+      # ===========================
+
+      - name: retrieve action metadata
+        id: action-metadata
+        uses: Shresht7/action-metadata@main
+
+      # Markdown Slots 📋
+      # =================
+
+      - name: update readme slots
+        id: markdown-slots
+        uses: Shresht7/markdown-slots@main
+        with:
+          slots: |
+            description: ${{ fromJSON(steps.action-metadata.outputs.metadata).description }}
+            inputs: ${{ steps.action-metadata.outputs.inputs-md-table }}
+            outputs: ${{ steps.action-metadata.outputs.outputs-md-table }}
+
+      # Push Changes 🌎
+      # ===============
+
+      - name: check for changes
+        id: git-diff
+        run: |
+          if git diff --exit-code; then
+            echo "::set-output name=changes_exist::false"
+          else
+            echo "::set-output name=changes_exist::true"
+          fi
+
+      - name: commit and push
+        if: ${{ steps.git-diff.outputs.changes_exist == 'true' }}
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git add .
+          git commit -m 'Update README.md 📄'
+          git push
+```
+</details>
+
+<!-- LINKS -->
+[1]: https://docs.github.com/en/actions/creating-actions/metadata-syntax-for-github-actions
+[2]: https://docs.github.com/en/actions/learn-github-actions/expressions
+[3]: https://docs.github.com/en/actions/learn-github-actions/expressions#fromjson
+[4]: https://www.github.com/Shresht7/markdown-slots
+[5]: .github/workflows/action-readme.yaml
