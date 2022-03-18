@@ -2,7 +2,7 @@
 -----------------
 
 <!-- slot: description -->
-null
+GitHub Action to expose parameters specified in the `action.yaml` metadata file.
 <!-- /slot -->
 
 ## Usage
