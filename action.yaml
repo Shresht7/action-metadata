@@ -30,6 +30,15 @@ outputs:
   metadata:
     description: stringified JSON representation of the entire action metadata file
 
+  name:
+    description: Name of the GitHub Action
+
+  author:
+    description: Name of the action's author
+
+  description:
+    description: A short description of the action
+
   inputs-md-table:
     description: Markdown table of the action inputs
 

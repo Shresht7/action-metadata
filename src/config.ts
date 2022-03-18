@@ -14,5 +14,5 @@ if (!workspace) { throw new Error('Invalid GITHUB_WORKSPACE. You need to checkou
 /** Path the source action metadata file. (default: `action.yaml`) */
 export const src = core.getInput('src', { required: true })
 
-/** Workspace path of the action metadata file */
+/** Workspace path to the action metadata file */
 export const path = nodePath.join(workspace, src)

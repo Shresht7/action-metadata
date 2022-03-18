@@ -15,13 +15,18 @@ export async function action() {
     //  Export the metadata object
     core.setOutput('metadata', metadata)
 
-    //  Generate inputs-md-table
+    //  Export name, author and description
+    core.setOutput('name', metadata.name)
+    core.setOutput('author', metadata.author)
+    core.setOutput('description', metadata.description)
+
+    //  Export inputs-md-table
     if (metadata.inputs) {
         const inputsMD = createInputsTable(metadata.inputs)
         core.setOutput('inputs-md-table', JSON.stringify(inputsMD))
     }
 
-    //  Generate outputs-md-table
+    //  Export outputs-md-table
     if (metadata.outputs) {
         const outputsMD = createOutputsTable(metadata.outputs)
         core.setOutput('outputs-md-table', JSON.stringify(outputsMD))
