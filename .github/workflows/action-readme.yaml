@@ -51,13 +51,18 @@ jobs:
       # ===============
       - name: check for changes
         id: git-diff
+        run: |
+          if git diff --exit-code; then
+            echo "::set-output name=changes_exist::false"
+          else
+            echo "::set-output name=changes_exist::true"
+          fi
+
+      - name: log shell
+        run: echo ${{ steps.git-diff.outputs.changes_exist }}
+
+      - name: git status
         run: git status
-        # run: |
-        #   if git diff --exit-code; then
-        #     echo "::set-output name=changes_exist::false"
-        #   else
-        #     echo "::set-output name=changes_exist::true"
-        #   fi
 
       - name: push
         if: ${{ steps.git-diff.outputs.changes_exist }}
