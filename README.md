@@ -22,9 +22,25 @@ GitHub Action to expose parameters specified in the `action.yaml` metadata file.
 ## Inputs
 
 <!-- slot: inputs -->
+
+
+| input | description | default |
+| ----- | ----------- | ------- |
+| path | Path to the `action.yaml` metadata file | **required** |
+| prettyPrint | Beautify markdown table | `false` |
+
+
 <!-- /slot -->
 
 ## Outputs
 
 <!-- slot: outputs -->
+
+
+| outputs | description |
+| ------- | ----------- |
+| inputs-md-table | Markdown table of the action inputs |
+| outputs-md-table | Markdown table of the action outputs |
+
+
 <!-- /slot -->
