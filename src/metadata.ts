@@ -4,7 +4,6 @@
 
 /** Action Inputs */
 export const inputs = {
-    src: 'src',
     inputAlignment: 'input-table-alignment',
     outputAlignment: 'output-table-alignment'
 } as const
