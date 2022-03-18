@@ -2,7 +2,7 @@
 -----------------
 
 <!-- slot: description -->
-GitHub Action to expose parameters specified in the `action.yaml` metadata file.
+A GitHub Action to expose action metadata of a GitHub Action!
 <!-- /slot -->
 
 ## Usage
@@ -32,9 +32,9 @@ GitHub Action to expose parameters specified in the `action.yaml` metadata file.
 ## Outputs
 
 <!-- slot: outputs -->
-|       Output       | Description                                                 |
-| :----------------: | :---------------------------------------------------------- |
-|     `metadata`     | stringified JSON representation of the action metadata file |
-| `inputs-md-table`  | Markdown table of the action inputs                         |
-| `outputs-md-table` | Markdown table of the action outputs                        |
+|       Output       | Description                                                        |
+| :----------------: | :----------------------------------------------------------------- |
+|     `metadata`     | stringified JSON representation of the entire action metadata file |
+|  `inputs-md-table` | Markdown table of the action inputs                                |
+| `outputs-md-table` | Markdown table of the action outputs                               |
 <!-- /slot -->
