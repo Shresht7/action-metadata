@@ -59,7 +59,7 @@ jobs:
           fi
 
       - name: push
-        if: ${{ steps.git-diff.outputs.changes_exist }}
+        if: ${{ steps.git-diff.outputs.changes_exist == 'true' }}
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email 'github-actions[bot]@users.noreply.github.com'
