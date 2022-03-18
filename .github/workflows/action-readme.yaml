@@ -49,16 +49,15 @@ jobs:
 
       # Push Changes 🌎
       # ===============
-
       - name: check for changes
         id: git-diff
-        run: |
-          if git diff --exit-code; then
-            echo "::set-output name=changes_exist::false"
-          else
-            echo "::set-output name=changes_exist::true"
-          fi
-          git diff --exit-code
+        run: git diff --exit-code
+        # run: |
+        #   if git diff --exit-code; then
+        #     echo "::set-output name=changes_exist::false"
+        #   else
+        #     echo "::set-output name=changes_exist::true"
+        #   fi
 
       - name: push
         if: ${{ steps.git-diff.outputs.changes_exist }}
