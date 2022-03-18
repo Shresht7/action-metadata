@@ -58,12 +58,6 @@ jobs:
             echo "::set-output name=changes_exist::true"
           fi
 
-      - name: log shell
-        run: echo ${{ steps.git-diff.outputs.changes_exist }}
-
-      - name: git status
-        run: git status
-
       - name: push
         if: ${{ steps.git-diff.outputs.changes_exist }}
         run: |
