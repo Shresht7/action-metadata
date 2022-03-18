@@ -1,7 +1,7 @@
 {
-  "name": "action-markdown",
+  "name": "action-metadata",
   "version": "0.1.0",
-  "description": "GitHub Action to expose parameters from action metadata file",
+  "description": "A GitHub Action to expose action metadata of a GitHub Action!",
   "main": "lib/index.js",
   "scripts": {
     "tsc": "tsc",
@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Shresht7/action-markdown.git"
+    "url": "git+https://github.com/Shresht7/action-metadata.git"
   },
   "author": "Shresht7",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Shresht7/action-markdown/issues"
+    "url": "https://github.com/Shresht7/action-metadata/issues"
   },
-  "homepage": "https://github.com/Shresht7/action-markdown#readme",
+  "homepage": "https://github.com/Shresht7/action-metadata#readme",
   "devDependencies": {
     "@types/js-yaml": "^4.0.5",
     "@types/node": "^17.0.21",

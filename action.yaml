@@ -1,10 +1,10 @@
 # ===============
-# ACTION-MARKDOWN
+# ACTION-METADATA
 # ===============
 
-name: action-markdown
+name: action-metadata
 author: Shresht7
-description: GitHub Action to expose parameters specified in the `action.yaml` metadata file.
+description: A GitHub Action to expose action metadata of a GitHub Action!
 
 runs:
   using: node16
@@ -28,7 +28,7 @@ inputs:
 
 outputs:
   metadata:
-    description: stringified JSON representation of the action metadata file
+    description: stringified JSON representation of the entire action metadata file
 
   inputs-md-table:
     description: Markdown table of the action inputs

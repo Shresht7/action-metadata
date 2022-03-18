@@ -1,4 +1,4 @@
-# Action Markdown
+# Action Metadata
 -----------------
 
 <!-- slot: description -->
@@ -8,17 +8,17 @@ GitHub Action to expose parameters specified in the `action.yaml` metadata file.
 ## Usage
 
 ```yaml
-- name: action-markdown
-  id: action-md
-  uses: Shresht7/action-markdown@main
+- name: action-metadata
+  id: action-metadata
+  uses: Shresht7/action-metadata@main
   with:
     path: ./action.yml # Path to the action metadata file (default: ./action.yaml)
 
 - name: some-other-action
   uses: user/some-other-action@v1
   with:
-    description: ${{ steps.action-md.outputs.description }}
-    inputs: ${{ steps.action-md.outputs.inputs-md-table }}
+    description: ${{ steps.action-metadata.outputs.description }}
+    inputs: ${{ steps.action-metadata.outputs.inputs-md-table }}
 ```
 
 ## Inputs
@@ -35,6 +35,6 @@ GitHub Action to expose parameters specified in the `action.yaml` metadata file.
 |       Output       | Description                                                 |
 | :----------------: | :---------------------------------------------------------- |
 |     `metadata`     | stringified JSON representation of the action metadata file |
-|  `inputs-md-table` | Markdown table of the action inputs                         |
+| `inputs-md-table`  | Markdown table of the action inputs                         |
 | `outputs-md-table` | Markdown table of the action outputs                        |
 <!-- /slot -->
