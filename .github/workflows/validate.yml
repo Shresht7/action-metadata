@@ -39,11 +39,10 @@ jobs:
         uses: ./
 
       - name: check output
-        uses: actions/github-script@v3
+        uses: actions/github-script@v6
         with:
           script: |
             const metadata = ${{ fromJSON(steps.action-metadata.outputs.metadata) }}
-            Object.entries(metadata).forEach(([key, value]) => console.log(key, value))
             if (!('name' in metadata)) {
               core.setFailed('Failed to parse metadata')
             }
