@@ -2,16 +2,19 @@
 # ACTION README
 # =============
 
-name: Action-Readme
+name: Action Readme
 
 # Activation Events
 # =================
 
 on:
-  # When the action.yaml file changes
+  # When the action.yml or this workflow file changes on the main branch
   push:
+    branches:
+      - main
     paths:
-      - action.yaml
+      - action.yml
+      - .github/workflows/action-readme.yml
 
   # Manual workflow dispatch
   workflow_dispatch:
@@ -32,21 +35,38 @@ jobs:
       # Retrieve Action Metadata 📜
       # ===========================
 
-      - name: retrieve action metadata
+      - name: get action metadata
         id: action-metadata
-        uses: Shresht7/action-metadata@main
+        uses: Shresht7/action-metadata@v1
+
+      # Read this Workflow File 📄
+      # ==========================
+
+      - name: read workflow file
+        id: read-file
+        uses: Shresht7/read-file-action@v1
+        with:
+          path: .github/workflows/action-readme.yml
 
       # Markdown Slots 📋
       # =================
 
       - name: update readme slots
         id: markdown-slots
-        uses: Shresht7/markdown-slots@main
+        uses: Shresht7/markdown-slots@v1
         with:
           slots: |
-            description: ${{ fromJSON(steps.action-metadata.outputs.metadata).description }}
-            inputs: ${{ steps.action-metadata.outputs.inputs-md-table }}
-            outputs: ${{ steps.action-metadata.outputs.outputs-md-table }}
+            - slot: description
+              content: ${{ steps.action-metadata.outputs.description }}
+            - slot: inputs
+              content: ${{ steps.action-metadata.outputs.inputs-md-table }}
+            - slot: outputs
+              content: ${{ steps.action-metadata.outputs.outputs-md-table }}
+            - slot: action-readme-workflow
+              content: ${{ toJSON(steps.read-file.outputs.contents) }}
+              props:
+                prefix: "```yaml"
+                suffix: "```"
 
       # Push Changes 🌎
       # ===============

@@ -82,7 +82,7 @@ This action also exposes markdown-tables for the `input` and `output` parameters
 
 ## 📃 Workflow Example
 
-The [Inputs](#inputs) and [Outputs](#outputs) tables you see in this readme were generated using this action in conjunction with [markdown-slots][4]. To see the complete workflow, see [action-readme.yaml][5].
+The [Inputs](#inputs) and [Outputs](#outputs) tables you see in this readme were generated using this action in conjunction with [markdown-slots][4]. To see the complete workflow, see [action-readme.yml][5].
 
 <details>
 
@@ -90,6 +90,7 @@ The [Inputs](#inputs) and [Outputs](#outputs) tables you see in this readme were
 
 <br />
 
+<!-- slot: action-readme-workflow -->
 ```yaml
 # =============
 # ACTION README
@@ -162,6 +163,7 @@ jobs:
           git commit -m 'Update README.md 📄'
           git push
 ```
+<!-- /slot -->
 
 </details>
 
@@ -175,4 +177,4 @@ jobs:
 [2]: https://docs.github.com/en/actions/learn-github-actions/expressions
 [3]: https://docs.github.com/en/actions/learn-github-actions/expressions#fromjson
 [4]: https://www.github.com/Shresht7/markdown-slots
-[5]: .github/workflows/action-readme.yaml
+[5]: .github/workflows/action-readme.yml
