@@ -43,6 +43,7 @@ jobs:
         with:
           script: |
             const metadata = ${{ fromJSON(steps.action-metadata.outputs.metadata) }}
+            console.log(metadata)
             if (!('name' in metadata)) {
               core.setFailed('Failed to parse metadata')
             }
