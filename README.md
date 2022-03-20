@@ -3,7 +3,7 @@
 </h1>
 
 <p align='center'>
-<!-- slot: description -->
+<!-- slot: description  -->
 A GitHub Action to expose action metadata of a GitHub Action!
 <!-- /slot -->
 </p>
@@ -54,7 +54,7 @@ The action can run on auto-pilot using the default parameters. To change any inp
     input-table-alignment: 'c,l,r,l'
 ```
 
-<!-- slot: inputs -->
+<!-- slot: inputs  -->
 | Input                    | Description                                                                                           |   Default | Required |
 | :----------------------- | :---------------------------------------------------------------------------------------------------- | --------: | :------: |
 | `input-table-alignment`  | Comma-separated array denoting the alignment of columns ['l' for left, 'c' for center, 'r' for right] | `l,l,r,c` |          |
@@ -69,7 +69,7 @@ The `name`, `author` and `description` fields, in addition to being available th
 
 This action also exposes markdown-tables for the `input` and `output` parameters specified in the metadata file. This was the primary motivation for this action.
 
-<!-- slot: outputs -->
+<!-- slot: outputs  -->
 | Output             | Description                                                        |
 | :----------------- | :----------------------------------------------------------------- |
 | `metadata`         | stringified JSON representation of the entire action metadata file |
@@ -90,22 +90,25 @@ The [Inputs](#inputs) and [Outputs](#outputs) tables you see in this readme were
 
 <br />
 
-<!-- slot: action-readme-workflow -->
+<!-- slot: action-readme-workflow  -->
 ```yaml
 # =============
 # ACTION README
 # =============
 
-name: Action-Readme
+name: Action Readme
 
 # Activation Events
 # =================
 
 on:
-  # When the action.yaml file changes
+  # When the action.yml or this workflow file changes on the main branch
   push:
+    branches:
+      - main
     paths:
-      - action.yaml
+      - action.yml
+      - .github/workflows/action-readme.yml
 
   # Manual workflow dispatch
   workflow_dispatch:
@@ -126,21 +129,38 @@ jobs:
       # Retrieve Action Metadata 📜
       # ===========================
 
-      - name: retrieve action metadata
+      - name: get action metadata
         id: action-metadata
-        uses: Shresht7/action-metadata@main
+        uses: Shresht7/action-metadata@v1
+
+      # Read this Workflow File 📄
+      # ==========================
+
+      - name: read workflow file
+        id: read-file
+        uses: Shresht7/read-file-action@v1
+        with:
+          path: .github/workflows/action-readme.yml
 
       # Markdown Slots 📋
       # =================
 
       - name: update readme slots
         id: markdown-slots
-        uses: Shresht7/markdown-slots@main
+        uses: Shresht7/markdown-slots@v1
         with:
           slots: |
-            description: ${{ fromJSON(steps.action-metadata.outputs.metadata).description }}
-            inputs: ${{ steps.action-metadata.outputs.inputs-md-table }}
-            outputs: ${{ steps.action-metadata.outputs.outputs-md-table }}
+            - slot: description
+              content: ${{ steps.action-metadata.outputs.description }}
+            - slot: inputs
+              content: ${{ steps.action-metadata.outputs.inputs-md-table }}
+            - slot: outputs
+              content: ${{ steps.action-metadata.outputs.outputs-md-table }}
+            - slot: action-readme-workflow
+              content: ${{ toJSON(steps.read-file.outputs.contents) }}
+              props:
+                prefix: "```yaml"
+                suffix: "```"
 
       # Push Changes 🌎
       # ===============
@@ -162,6 +182,7 @@ jobs:
           git add .
           git commit -m 'Update README.md 📄'
           git push
+
 ```
 <!-- /slot -->
 
