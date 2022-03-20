@@ -42,7 +42,7 @@ jobs:
         uses: actions/github-script@v3
         with:
           script: |
-            const metadata = ${{ toJSON(steps.action-metadata.outputs.metadata) }}
-            if (!metadata?.name) {
+            const metadata = ${{ fromJSON(steps.action-metadata.outputs.metadata) }}
+            if (!('name' in metadata)) {
               core.setFailed('Failed to parse metadata')
             }
