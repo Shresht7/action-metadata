@@ -2,15 +2,15 @@
   Action Metadata
 </h1>
 
----
-
-<br />
-
+<p align='center'>
 <!-- slot: description -->
 A GitHub Action to expose action metadata of a GitHub Action!
 <!-- /slot -->
+</p>
 
-## Usage
+---
+
+## 📖 Usage
 
 Use this action as a step in a workflow job and give it an `id` (`action-metadata` in the following examples).
 
@@ -42,7 +42,7 @@ The entire [metadata][1] object is available as a stringified JSON (i.e. `string
     name: ${{ fromJSON(steps.action-metadata.outputs.metadata).author }}
 ```
 
-## Inputs
+## 📋 Inputs
 
 The action can run on auto-pilot using the default parameters. To change any inputs, pass them along the workflow step.
 
@@ -61,7 +61,7 @@ The action can run on auto-pilot using the default parameters. To change any inp
 | `output-table-alignment` | Comma-separated array denoting the alignment of columns ['l' for left, 'c' for center, 'r' for right] | `l,l,r,c` |          |
 <!-- /slot -->
 
-## Outputs
+## 📋 Outputs
 
 The action exposes the entire metadata yaml (`metadata`) as a stringified JSON. To make the most of this output you will need to parse it using [`fromJSON`][3] or `JSON.parse` functions.
 
@@ -80,14 +80,15 @@ This action also exposes markdown-tables for the `input` and `output` parameters
 | `outputs-md-table` | Markdown table of the action outputs                               |
 <!-- /slot -->
 
-## Example
+## 📃 Workflow Example
 
 The [Inputs](#inputs) and [Outputs](#outputs) tables you see in this readme were generated using this action in conjunction with [markdown-slots][4]. To see the complete workflow, see [action-readme.yaml][5].
 
 <details>
-<summary>
-  or click here
-</summary>
+
+<summary>or click here</summary>
+
+<br />
 
 ```yaml
 # =============
@@ -161,7 +162,13 @@ jobs:
           git commit -m 'Update README.md 📄'
           git push
 ```
+
 </details>
+
+---
+
+## 📑 License
+> [MIT License](./LICENSE)
 
 <!-- LINKS -->
 [1]: https://docs.github.com/en/actions/creating-actions/metadata-syntax-for-github-actions
