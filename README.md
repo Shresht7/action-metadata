@@ -90,7 +90,7 @@ The [Inputs](#inputs) and [Outputs](#outputs) tables you see in this readme were
 
 <br />
 
-<!-- slot: action-readme-workflow | prepend: ```yaml, append: ```  -->
+<!-- slot: action-readme-workflow  prepend: ```yaml, append: ``` -->
 ```yaml
 # =============
 # ACTION README
@@ -158,9 +158,6 @@ jobs:
               content: ${{ steps.action-metadata.outputs.outputs-md-table }}
             - slot: action-readme-workflow
               content: ${{ toJSON(steps.read-file.outputs.contents) }}
-              props:
-                prefix: "```yaml"
-                suffix: "```"
 
       # Push Changes 🌎
       # ===============
