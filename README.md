@@ -90,7 +90,7 @@ The [Inputs](#inputs) and [Outputs](#outputs) tables you see in this readme were
 
 <br />
 
-<!-- slot: action-readme-workflow  -->
+<!-- slot: action-readme-workflow | prepend: ```yaml, append: ```  -->
 ```yaml
 # =============
 # ACTION README
