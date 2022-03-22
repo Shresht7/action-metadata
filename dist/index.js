@@ -1,4 +1,4 @@
-require('./sourcemap-register.js');/******/ (() => { // webpackBootstrap
+/******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
 /***/ 7351:
@@ -6668,4 +6668,3 @@ function toAlignment(value) {
 /******/ 	
 /******/ })()
 ;
-//# sourceMappingURL=index.js.map
