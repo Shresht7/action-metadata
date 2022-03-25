@@ -6007,7 +6007,7 @@ function createInputsTable(metadata, align = ['l', 'l', 'r', 'c']) {
             `\`${key}\``,
             value.description,
             `\`${value.default}\`` || '',
-            value.required ? '**required**' : ''
+            value.required ? '✅' : ''
         ]);
     }
     return (0, markdown_table_1.markdownTable)(inputs, { align });

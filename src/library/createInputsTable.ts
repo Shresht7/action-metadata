@@ -12,7 +12,7 @@ export function createInputsTable(metadata: Record<string, ActionInput>, align: 
             `\`${key}\``,
             value.description,
             `\`${value.default}\`` || '',
-            value.required ? '**required**' : ''
+            value.required ? '✅' : ''
         ])
     }
     return markdownTable(inputs, { align })
