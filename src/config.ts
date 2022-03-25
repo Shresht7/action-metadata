@@ -12,15 +12,8 @@ import type { alignment } from './types'
 // CONFIG
 // ======
 
-/** GITHUB_WORKSPACE */
-const workspace = process.env.GITHUB_WORKSPACE || ''
-
-if (!workspace) {
-    throw new Error('Invalid GITHUB_WORKSPACE. You need to checkout this repository using the actions/checkout@v3 github-action for the GITHUB_WORKSPACE environment variable.')
-}
-
 /** Path to the metadata file */
-const metadataPath = getMetadataFilePath(workspace)
+const metadataPath = getMetadataFilePath()
 
 if (!metadataPath) {
     throw new Error('Failed to locate action metadata file. Make sure `action.yaml` or `action.yml` exists!')
