@@ -2,11 +2,26 @@
   Action Metadata
 </h1>
 
+<div align='center'>
+
+[![Release](https://img.shields.io/github/v/release/Shresht7/action-metadata?style=for-the-badge)](https://github.com/Shresht7/action-metadata/releases)
+[![License](https://img.shields.io/github/license/Shresht7/action-metadata?style=for-the-badge)](./LICENSE)
+
+</div>
+
 <p align='center'>
 <!-- slot: description  -->
 A GitHub Action to expose action metadata of a GitHub Action!
 <!-- /slot -->
 </p>
+
+<div align='center'>
+
+[![Test](https://github.com/Shresht7/action-metadata/actions/workflows/test.yml/badge.svg)](https://github.com/Shresht7/action-metadata/actions/workflows/test.yml)
+[![Validate](https://github.com/Shresht7/action-metadata/actions/workflows/validate.yml/badge.svg)](https://github.com/Shresht7/action-metadata/actions/workflows/validate.yml)
+[![Action Readme](https://github.com/Shresht7/action-metadata/actions/workflows/action-readme.yml/badge.svg)](https://github.com/Shresht7/action-metadata/actions/workflows/action-readme.yml)
+
+</div>
 
 ---
 
@@ -83,6 +98,8 @@ This action also exposes markdown-tables for the `input` and `output` parameters
 ## 📃 Workflow Example
 
 The [Inputs](#inputs) and [Outputs](#outputs) tables you see in this readme were generated using this action in conjunction with [markdown-slots][4]. To see the complete workflow, see [action-readme.yml][5].
+
+[![Action Readme](https://github.com/Shresht7/action-metadata/actions/workflows/action-readme.yml/badge.svg)](https://github.com/Shresht7/action-metadata/actions/workflows/action-readme.yml)
 
 <details>
 
