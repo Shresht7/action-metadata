@@ -5780,13 +5780,8 @@ const metadata_1 = __nccwpck_require__(3252);
 // ======
 // CONFIG
 // ======
-/** GITHUB_WORKSPACE */
-const workspace = process.env.GITHUB_WORKSPACE || '';
-if (!workspace) {
-    throw new Error('Invalid GITHUB_WORKSPACE. You need to checkout this repository using the actions/checkout@v3 github-action for the GITHUB_WORKSPACE environment variable.');
-}
 /** Path to the metadata file */
-const metadataPath = (0, helpers_1.getMetadataFilePath)(workspace);
+const metadataPath = (0, helpers_1.getMetadataFilePath)();
 if (!metadataPath) {
     throw new Error('Failed to locate action metadata file. Make sure `action.yaml` or `action.yml` exists!');
 }
@@ -5832,14 +5827,12 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.getMetadataFilePath = void 0;
 //  Library
 const fs = __importStar(__nccwpck_require__(7561));
-const path = __importStar(__nccwpck_require__(9411));
 /** Locate the action metadata file (either action.yml or action.yaml) */
-function getMetadataFilePath(workspace) {
+function getMetadataFilePath() {
     const possibleNames = ['action.yml', 'action.yaml'];
     for (const fileName of possibleNames) {
-        const filePath = path.join(workspace, fileName);
-        if (fs.existsSync(filePath)) {
-            return filePath;
+        if (fs.existsSync(fileName)) {
+            return fileName;
         }
     }
 }
@@ -6014,7 +6007,7 @@ function createInputsTable(metadata, align = ['l', 'l', 'r', 'c']) {
             `\`${key}\``,
             value.description,
             `\`${value.default}\`` || '',
-            value.required ? '**required**' : ''
+            value.required ? '✅' : ''
         ]);
     }
     return (0, markdown_table_1.markdownTable)(inputs, { align });
@@ -6158,14 +6151,6 @@ module.exports = require("net");
 
 "use strict";
 module.exports = require("node:fs");
-
-/***/ }),
-
-/***/ 9411:
-/***/ ((module) => {
-
-"use strict";
-module.exports = require("node:path");
 
 /***/ }),
 
