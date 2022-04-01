@@ -23,6 +23,19 @@ A GitHub Action to expose action metadata of a GitHub Action!
 
 </div>
 
+<details>
+
+<summary align='center'>Table of Contents</summary>
+
+- [📖 Usage](#-usage)
+- [📋 Inputs](#-inputs)
+- [📋 Outputs](#-outputs)
+- [📃 Workflow Example](#-workflow-example)
+- [📑 License](#-license)
+
+</details>
+
+
 ---
 
 ## 📖 Usage
