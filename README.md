@@ -10,7 +10,7 @@
 </div>
 
 <p align='center'>
-<!-- slot: description  -->
+<!-- slot: description -->
 A GitHub Action to expose action metadata of a GitHub Action!
 <!-- /slot -->
 </p>
@@ -82,7 +82,7 @@ The action can run on auto-pilot using the default parameters. To change any inp
     input-table-alignment: 'c,l,r,l'
 ```
 
-<!-- slot: inputs  -->
+<!-- slot: inputs -->
 | Input                    | Description                                                                                           |   Default | Required |
 | :----------------------- | :---------------------------------------------------------------------------------------------------- | --------: | :------: |
 | `input-table-alignment`  | Comma-separated array denoting the alignment of columns ['l' for left, 'c' for center, 'r' for right] | `l,l,r,c` |          |
@@ -97,7 +97,7 @@ The `name`, `author` and `description` fields, in addition to being available th
 
 This action also exposes markdown-tables for the `input` and `output` parameters specified in the metadata file. This was the primary motivation for this action.
 
-<!-- slot: outputs  -->
+<!-- slot: outputs -->
 | Output             | Description                                                        |
 | :----------------- | :----------------------------------------------------------------- |
 | `metadata`         | stringified JSON representation of the entire action metadata file |
@@ -120,7 +120,7 @@ The [Inputs](#inputs) and [Outputs](#outputs) tables you see in this readme were
 
 <br />
 
-<!-- slot: action-readme-workflow, prepend: ```yaml, append: ``` -->
+<!-- slot: action-readme-workflow,  prepend: ```yaml, append: ``` -->
 ```yaml
 # =============
 # ACTION README
