@@ -1,0 +1,50 @@
+# ============================================
+#                   LABEL-SYNC
+# --------------------------------------------
+# GitHub Action to manage labels declaratively
+# ============================================
+
+name: Label Sync
+
+# Activation Events
+# =================
+
+on:
+  # When .github/labels.yml changes are pushed to the default branch
+  push:
+    branches:
+      - main
+    paths:
+      - https://gist.githubusercontent.com/Shresht7/6bca54d3d5b00e2f8a143ef15e23a4bb/raw/ced2fd3fac0528affdd7b59d842260630d9517ce/labels.yml
+
+  # When a workflow event is dispatched manually
+  workflow_dispatch:
+
+# Jobs
+# ====
+
+jobs:
+  label-sync:
+    runs-on: ubuntu-latest
+    name: Label Sync
+    steps:
+      # Actions/Checkout
+      # ================
+
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      # Execute label-sync action
+      # =========================
+
+      - name: label-sync
+        uses: Shresht7/label-sync-action@main
+        id: label-sync
+        with:
+          dryrun: false # Will not make any actual changes if true (default: true)
+          create: true # If true, label-sync has permissions to create labels (default: true)
+          update: true # If true, label-sync has permissions to update labels (default: true)
+          delete: false # If true, label-sync has permissions to delete labels (default: false)
+        env:
+          # Needed to make use of the GitHub API to modify labels and update .github/labels.yml file
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
