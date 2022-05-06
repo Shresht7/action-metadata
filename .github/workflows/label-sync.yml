@@ -15,7 +15,7 @@ on:
     branches:
       - main
     paths:
-      - https://gist.githubusercontent.com/Shresht7/6bca54d3d5b00e2f8a143ef15e23a4bb/raw/ced2fd3fac0528affdd7b59d842260630d9517ce/labels.yml
+      - .github/labels.yml
 
   # When a workflow event is dispatched manually
   workflow_dispatch:
@@ -41,6 +41,7 @@ jobs:
         uses: Shresht7/label-sync-action@main
         id: label-sync
         with:
+          config: https://gist.githubusercontent.com/Shresht7/6bca54d3d5b00e2f8a143ef15e23a4bb/raw/ced2fd3fac0528affdd7b59d842260630d9517ce/labels.yml
           dryrun: false # Will not make any actual changes if true (default: true)
           create: true # If true, label-sync has permissions to create labels (default: true)
           update: true # If true, label-sync has permissions to update labels (default: true)
